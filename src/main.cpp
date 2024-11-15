@@ -9,13 +9,10 @@ int main(int argc, char* argv[]){
     }
 
     Emulator emu;
-
-    if(!emu.read_cart(argv[1])) {
-        printf("Failed to load cartridge.\n");
-        return 1; 
+    if(!emu.emu_init(argv[1])){
+        printf("Emulator has stoped working!!!\n");
+        return -1;
     }
-
-    printf("Loading finished...\n");
     
     return 0;
 }

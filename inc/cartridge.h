@@ -32,7 +32,9 @@ class Cartridge {
 
     public:
 
-    bool read_cart(char* path);
+    bool load_cart(char* path);
+    uint8_t read_cart(uint16_t addr);
+    void write_cart(uint16_t addr, uint8_t val);
 
 };
 

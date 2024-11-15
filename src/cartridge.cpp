@@ -118,7 +118,7 @@ std::unordered_map<uint8_t, std::string> ram_size_map = {
     {0x05, "64 Kib - 8 banks of 8KiB each"}
 };
 
-bool Cartridge::read_cart(char* path){
+bool Cartridge::load_cart(char* path){
     //this->filename = path.substr(path.find_last_of("/"));
     
     FILE* fp = fopen(path, "r");
@@ -159,4 +159,12 @@ bool Cartridge::read_cart(char* path){
 
     printf("\t Checksum : %2.2X (%s)\n", this->header->header_checksum, (x & 0xFF) ? "PASSED" : "FAILED");
     return true;
+}
+
+uint8_t Cartridge::read_cart(uint16_t addr){
+    return this->rom_data[addr];
+}
+
+void Cartridge::write_cart(uint16_t addr, uint8_t val){
+    
 }
