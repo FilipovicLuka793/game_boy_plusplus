@@ -1,12 +1,17 @@
 #ifndef _CPU_H_
 #define _CPU_H_
 
+#include "bus.h"
 #include "flag_reg.h"
+#include "instructions.h"
 #include <cstdint>
+#include <functional>
 
 class Cpu {
     
     private:
+
+    Bus& bus;
 
     uint8_t a; // Accumulator
     Flag_reg f; // Flags
@@ -19,10 +24,27 @@ class Cpu {
     uint16_t sp;
     uint16_t pc;
 
+    uint16_t fetched_data;
+    uint16_t mem_destionation;
+    bool destination_is_memory;
+    uint8_t cur_opcode;
+    instruction* cur_instruction;
+
+    void fetch_instruction();
+    void fetch_data();
+    void execute();
+
+    //Instruction processes
+    void proc_nop();
+
     public:
+
+    Cpu(Bus& bus): bus(bus) {}
 
     void cpu_init();
     bool cpu_step();
+
+    
 
 };
 

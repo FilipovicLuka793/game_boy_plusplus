@@ -1,6 +1,7 @@
 #ifndef _EMULATOR_H_
 #define _EMULATOR_H_
 
+#include "bus.h"
 #include "cartridge.h"
 #include "cpu.h"
 #include <cstdint>
@@ -10,13 +11,11 @@ class Emulator {
 
     Cartridge cart;
     Cpu cpu;
-
-    uint8_t bus_read(uint16_t addr);
-    void bus_write(uint16_t addr, uint8_t val);
+    Bus bus;
 
     public:
 
-    Emulator() {}
+    Emulator(): bus(cart), cpu(bus) {}
 
     bool emu_init(char* path);
 

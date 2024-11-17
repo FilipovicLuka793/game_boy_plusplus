@@ -1,6 +1,7 @@
 #ifndef _INSTRUCTIONS_H_
 #define _INSTRUCTIONS_H_
 
+#include <cstdint>
 typedef enum {
     CT_NONE,
     CT_NZ,
@@ -77,7 +78,19 @@ typedef enum {
 } register_type;
 
 typedef enum {
-
+    AT_NONE,
+    AT_NO
 } addres_type;
+
+typedef struct{
+    instruction_type ins_type;
+    addres_type addr_type;
+    register_type reg_1;
+    register_type reg_2;
+    condition_type con_type;
+    uint8_t param;
+} instruction;
+
+instruction* instruction_by_opcode(uint8_t opcode);
 
 #endif
