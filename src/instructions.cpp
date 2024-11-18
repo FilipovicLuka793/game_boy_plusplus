@@ -8,7 +8,9 @@
 std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x00, {IT_NOP, AT_NO}},
     {0xC3, {IT_JP, AT_IMM16}},
-    {0x35, {IT_DEC, AT_MEMR, RT_HL}},
+    //{0x35, {IT_DEC, AT_MEMR, RT_HL}},
+    {0x60, {IT_LD, AT_R_R, RT_H, RT_B}},
+    {0xAF, {IT_XOR, AT_R, RT_A}}
 
 };
 
@@ -71,4 +73,25 @@ std::unordered_map<instruction_type, std::string> ins_name_map = {
 
 std::string instruction_name(instruction_type it){
     return ins_name_map.at(it);
+}
+
+std::unordered_map<register_type, std::string> reg_name_map = {
+    {RT_A, "A"},
+    {RT_F, "F"},
+    {RT_B, "B"},
+    {RT_C, "C"},
+    {RT_D, "D"},
+    {RT_E, "E"},
+    {RT_H, "H"},
+    {RT_L, "L"},
+    {RT_AF, "AF"},
+    {RT_BC, "BC"},
+    {RT_DE, "DE"},
+    {RT_HL, "HL"},
+    {RT_PC, "PC"},
+    {RT_SP, "SP"}
+};
+
+std::string register_name(register_type rt){
+    return reg_name_map.at(rt);
 }

@@ -22,3 +22,41 @@ uint16_t Cpu::read_reg(register_type rt){
         default: return 0;
     }
 }
+
+void Cpu::set_reg(register_type rt, uint16_t val){
+    switch (rt) {
+        case RT_A : this->a = val; return;
+        case RT_F : this->f.set_reg(val); return;
+        case RT_B : this->b = val; return;
+        case RT_C : this->c = val; return;
+        case RT_D : this->d = val; return;
+        case RT_E : this->e = val; return;
+        case RT_H : this->h = val; return;
+        case RT_L : this->l = val; return;
+
+        case RT_AF : {
+            this->a = val >> 8;
+            this->f.set_reg(val);
+            return;
+        }
+        case RT_BC : {
+            this->b = val >> 8;
+            this->c = val;
+            return;
+        }
+        case RT_DE : {
+            this->d = val >> 8;
+            this->e = val;
+            return;
+        }
+        case RT_HL : {
+            this->h = val >> 8;
+            this->l = val;
+            return;
+        }
+
+        case RT_PC : this->pc = val; return;
+        case RT_SP : this->sp = val; return;
+        default: return;
+    }
+}

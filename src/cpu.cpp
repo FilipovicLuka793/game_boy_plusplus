@@ -9,7 +9,7 @@ void Cpu::cpu_init(){
 }
 
 void Cpu::fetch_instruction(){
-    this->cur_opcode = bus.bus_read(this->pc);
+    this->cur_opcode = bus.bus_read(this->pc++);
     this->cur_instruction = instruction_by_opcode(this->cur_opcode);
 }
 
@@ -32,9 +32,21 @@ void Cpu::fetch_data(){
         }
 
         case AT_MEMR: {
+            //TODO
             this->destination_is_memory = true;
             this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
         }
+
+        case AT_R_R: {
+            this->fetched_data = this->read_reg(this->cur_instruction->reg_2);
+            return;
+        }
+
+        case AT_R: {
+            this->fetched_data = this->read_reg(this->cur_instruction->reg_1);
+            return;
+        }
+
         default:
             printf("Unkonwn addresing type: %d (%02X)\n", this->cur_instruction->addr_type, this->cur_opcode);
             exit(-5);
@@ -53,6 +65,9 @@ void Cpu::execute(){
         case IT_DEC:
             proc_dec();
             return;
+        case IT_LD:
+            proc_ld();
+            return;
         default:
             printf("Unknown instruction in execute: %d\n", this->cur_instruction->ins_type);
     }
@@ -64,15 +79,14 @@ bool Cpu::cpu_step(){
     fetch_instruction();
     fetch_data();
 
-    printf("%04X: %-8s (%02X) A: %02X B: %02X C: %02X D: %02X E: %02X H: %02X L: %02X FLAGS: Z: %d N: %d H: %d C: %d\n", 
+    printf("%04X: %-8s (%02X, %02X, %02X) A: %02X B: %02X C: %02X D: %02X E: %02X H: %02X L: %02X FLAGS: Z: %d N: %d H: %d C: %d\n", 
         pc, 
         instruction_name(this->cur_instruction->ins_type).c_str(),
-        this->cur_opcode,
+        this->cur_opcode, this->bus.bus_read(this->pc + 1), this->bus.bus_read(this->pc + 2), 
         this->a, this->b, this->c, this->d, this->e, this->h, this->l,
         this->f.get_zero(), this->f.get_subtraction(), this->f.get_half_carry(), this->f.get_carry());
 
     execute();
-    this->pc++;
     return true;
 }
 

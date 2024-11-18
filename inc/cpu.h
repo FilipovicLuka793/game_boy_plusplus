@@ -37,11 +37,53 @@ class Cpu {
     void emu_cycles(int count);
 
     uint16_t read_reg(register_type rt);
+    void set_reg(register_type tr, uint16_t val);
 
     //Instruction processes
     void proc_nop();
     void proc_jp();
     void proc_dec();
+    void proc_ld();
+    void proc_inc();
+    void proc_rlca();
+    void proc_add();
+    void proc_rrca();
+    void proc_stop();
+    void proc_rla();
+    void proc_jr();
+    void proc_rra();
+    void proc_daa();
+    void proc_cpl();
+    void proc_scf();
+    void proc_ccf();
+    void proc_halt();
+    void proc_adc();
+    void proc_sub();
+    void proc_sbc();
+    void proc_and();
+    void proc_xor();
+    void proc_or();
+    void proc_cp();
+    void proc_ret();
+    void proc_pop();
+    void proc_call();
+    void proc_push();
+    void proc_rst();
+    void proc_prefix();
+    void proc_reti();
+    void proc_di();
+    void proc_ei();
+    void proc_rlc();
+    void proc_rrc();
+    void proc_rl();
+    void proc_rr();
+    void proc_sla();
+    void proc_sra();
+    void proc_swap();
+    void proc_srl();
+    void proc_bit();
+    void proc_res();
+    void proc_set();
 
     public:
 
