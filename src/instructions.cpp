@@ -5,7 +5,10 @@
 #include <unordered_map>
 
 std::unordered_map<uint8_t, instruction> instruction_map = {
-    {0x00, {IT_NOP, AT_NO}}
+    {0x00, {IT_NOP, AT_NO}},
+    {0xC3, {IT_JP, AT_IMM16}},
+    {0x35, {IT_DEC, AT_MEMR, RT_HL}},
+    
 };
 
 instruction* instruction_by_opcode(uint8_t opcode){

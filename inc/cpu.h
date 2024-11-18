@@ -34,8 +34,14 @@ class Cpu {
     void fetch_data();
     void execute();
 
+    void emu_cycles(int count);
+
+    uint16_t read_reg(register_type rt);
+
     //Instruction processes
     void proc_nop();
+    void proc_jp();
+    void proc_dec();
 
     public:
 

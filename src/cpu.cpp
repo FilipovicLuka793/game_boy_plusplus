@@ -19,8 +19,22 @@ void Cpu::fetch_data(){
 
     switch (this->cur_instruction->addr_type) {
         case AT_NO:
-            return;;
+            return;
+        
+        case AT_IMM16: {
+            uint16_t lo = bus.bus_read(this->pc);
+            emu_cycles(1);
+            uint16_t hi = bus.bus_read(this->pc + 1);
+            emu_cycles(1);
+            this->fetched_data = (hi << 8) | lo;
+            this->pc += 2;
+            return;
+        }
 
+        case AT_MEMR: {
+            this->destination_is_memory = true;
+            this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
+        }
         default:
             printf("Unkonwn addresing type: %d (%02X)\n", this->cur_instruction->addr_type, this->cur_opcode);
             exit(-5);
@@ -33,6 +47,12 @@ void Cpu::execute(){
         case IT_NOP:
             proc_nop();
             return;
+        case IT_JP:
+            proc_jp();
+            return;
+        case IT_DEC:
+            proc_dec();
+            return;
         default:
             printf("Unknown instruction in execute: %d\n", this->cur_instruction->ins_type);
     }
@@ -40,7 +60,6 @@ void Cpu::execute(){
 
 bool Cpu::cpu_step(){
 
-    uint16_t pc = this->pc;
     fetch_instruction();
     fetch_data();
 
@@ -49,4 +68,8 @@ bool Cpu::cpu_step(){
     execute();
     this->pc++;
     return true;
+}
+
+void Cpu::emu_cycles(int count){
+
 }

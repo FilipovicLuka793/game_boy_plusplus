@@ -79,7 +79,10 @@ typedef enum {
 
 typedef enum {
     AT_NONE,
-    AT_NO
+    AT_NO,
+    AT_IMM16,
+    AT_MEMR,
+
 } addres_type;
 
 typedef struct{
