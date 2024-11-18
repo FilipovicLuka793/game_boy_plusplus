@@ -2,6 +2,7 @@
 #define _INSTRUCTIONS_H_
 
 #include <cstdint>
+#include <string>
 typedef enum {
     CT_NONE,
     CT_NZ,
@@ -95,5 +96,6 @@ typedef struct{
 } instruction;
 
 instruction* instruction_by_opcode(uint8_t opcode);
+std::string instruction_name(instruction_type it);
 
 #endif

@@ -59,11 +59,17 @@ void Cpu::execute(){
 }
 
 bool Cpu::cpu_step(){
+    uint16_t pc = this->pc;
 
     fetch_instruction();
     fetch_data();
 
-    printf("Opcode: %02X, Ins type: %d\n", this->cur_opcode, this->cur_instruction->ins_type);
+    printf("%04X: %-8s (%02X) A: %02X B: %02X C: %02X D: %02X E: %02X H: %02X L: %02X FLAGS: Z: %d N: %d H: %d C: %d\n", 
+        pc, 
+        instruction_name(this->cur_instruction->ins_type).c_str(),
+        this->cur_opcode,
+        this->a, this->b, this->c, this->d, this->e, this->h, this->l,
+        this->f.get_zero(), this->f.get_subtraction(), this->f.get_half_carry(), this->f.get_carry());
 
     execute();
     this->pc++;
