@@ -16,10 +16,10 @@ class Flag_reg {
     uint8_t get_reg();
     void set_reg(uint8_t val);
 
-    void set_zero();
-    void set_subtraction();
-    void set_half_carry();
-    void set_carry();
+    void set_zero(bool z);
+    void set_subtraction(bool n);
+    void set_half_carry(bool h);
+    void set_carry(bool c);
 
     bool get_zero();
     bool get_subtraction();

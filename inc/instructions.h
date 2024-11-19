@@ -85,7 +85,9 @@ typedef enum {
     AT_MEMR,
     AT_R_R,
     AT_R,
-    
+    AT_R_D16,
+    AT_R_D8,
+    AT_HLD_R
 } addres_type;
 
 typedef struct{
@@ -100,5 +102,6 @@ typedef struct{
 instruction* instruction_by_opcode(uint8_t opcode);
 std::string instruction_name(instruction_type it);
 std::string register_name(register_type rt);
+std::string addresing_name(addres_type at);
 
 #endif

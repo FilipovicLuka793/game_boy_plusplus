@@ -60,3 +60,18 @@ void Cpu::set_reg(register_type rt, uint16_t val){
         default: return;
     }
 }
+
+void Cpu::set_flags(int8_t z, int8_t n, int8_t h, int8_t c){
+    if(z != -1){
+        this->f.set_zero(z);
+    }
+    if(n != -1){
+        this->f.set_subtraction(n);
+    }
+    if(h != -1){
+        this->f.set_half_carry(h);
+    }
+    if(c != -1){
+        this->f.set_carry(c);
+    }
+}

@@ -166,5 +166,6 @@ uint8_t Cartridge::read_cart(uint16_t addr){
 }
 
 void Cartridge::write_cart(uint16_t addr, uint8_t val){
-    
+    printf("Writing in ROM is not yet implemented\n");
+    exit(-8);
 }

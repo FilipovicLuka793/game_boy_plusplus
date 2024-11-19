@@ -40,6 +40,8 @@ class Cpu {
     void set_reg(register_type tr, uint16_t val);
 
     //Instruction processes
+    void set_flags(int8_t z, int8_t n, int8_t h, int8_t c);
+
     void proc_nop();
     void proc_jp();
     void proc_dec();

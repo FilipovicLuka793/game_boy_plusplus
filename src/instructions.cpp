@@ -8,9 +8,74 @@
 std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x00, {IT_NOP, AT_NO}},
     {0xC3, {IT_JP, AT_IMM16}},
-    //{0x35, {IT_DEC, AT_MEMR, RT_HL}},
+    {0xA8, {IT_XOR, AT_R, RT_B}},
+    {0xA9, {IT_XOR, AT_R, RT_C}},
+    {0xAA, {IT_XOR, AT_R, RT_D}},
+    {0xAB, {IT_XOR, AT_R, RT_E}},
+    {0xAC, {IT_XOR, AT_R, RT_H}},
+    {0xAD, {IT_XOR, AT_R, RT_L}},
+    {0xAF, {IT_XOR, AT_R, RT_A}},
+    {0x01, {IT_LD, AT_R_D16, RT_BC}},
+    {0x11, {IT_LD, AT_R_D16, RT_DE}},
+    {0x21, {IT_LD, AT_R_D16, RT_HL}},
+    {0x31, {IT_LD, AT_R_D16, RT_SP}},
+    {0x0E, {IT_LD, AT_R_D8, RT_C}},
+    {0x06, {IT_LD, AT_R_D8, RT_B}},
+    {0x16, {IT_LD, AT_R_D8, RT_D}},
+    {0x1E, {IT_LD, AT_R_D8, RT_E}},
+    {0x26, {IT_LD, AT_R_D8, RT_H}},
+    {0x2E, {IT_LD, AT_R_D8, RT_L}},
+    {0x3E, {IT_LD, AT_R_D8, RT_A}},
+    {0x40, {IT_LD, AT_R_R, RT_B, RT_B}},
+    {0x41, {IT_LD, AT_R_R, RT_B, RT_C}},
+    {0x42, {IT_LD, AT_R_R, RT_B, RT_D}},
+    {0x43, {IT_LD, AT_R_R, RT_B, RT_E}},
+    {0x44, {IT_LD, AT_R_R, RT_B, RT_H}},
+    {0x45, {IT_LD, AT_R_R, RT_B, RT_L}},
+    {0x47, {IT_LD, AT_R_R, RT_B, RT_A}},
+    {0x48, {IT_LD, AT_R_R, RT_C, RT_B}},
+    {0x49, {IT_LD, AT_R_R, RT_C, RT_C}},
+    {0x4A, {IT_LD, AT_R_R, RT_C, RT_D}},
+    {0x4B, {IT_LD, AT_R_R, RT_C, RT_E}},
+    {0x4C, {IT_LD, AT_R_R, RT_C, RT_H}},
+    {0x4D, {IT_LD, AT_R_R, RT_C, RT_L}},
+    {0x4F, {IT_LD, AT_R_R, RT_C, RT_A}},
+    {0x50, {IT_LD, AT_R_R, RT_D, RT_B}},
+    {0x51, {IT_LD, AT_R_R, RT_D, RT_C}},
+    {0x52, {IT_LD, AT_R_R, RT_D, RT_D}},
+    {0x53, {IT_LD, AT_R_R, RT_D, RT_E}},
+    {0x54, {IT_LD, AT_R_R, RT_D, RT_H}},
+    {0x55, {IT_LD, AT_R_R, RT_D, RT_L}},
+    {0x57, {IT_LD, AT_R_R, RT_D, RT_A}},
+    {0x58, {IT_LD, AT_R_R, RT_E, RT_B}},
+    {0x59, {IT_LD, AT_R_R, RT_E, RT_C}},
+    {0x5A, {IT_LD, AT_R_R, RT_E, RT_D}},
+    {0x5B, {IT_LD, AT_R_R, RT_E, RT_E}},
+    {0x5C, {IT_LD, AT_R_R, RT_E, RT_H}},
+    {0x5D, {IT_LD, AT_R_R, RT_E, RT_L}},
+    {0x5F, {IT_LD, AT_R_R, RT_E, RT_A}},
     {0x60, {IT_LD, AT_R_R, RT_H, RT_B}},
-    {0xAF, {IT_XOR, AT_R, RT_A}}
+    {0x61, {IT_LD, AT_R_R, RT_H, RT_C}},
+    {0x62, {IT_LD, AT_R_R, RT_H, RT_D}},
+    {0x63, {IT_LD, AT_R_R, RT_H, RT_E}},
+    {0x64, {IT_LD, AT_R_R, RT_H, RT_H}},
+    {0x65, {IT_LD, AT_R_R, RT_H, RT_L}},
+    {0x67, {IT_LD, AT_R_R, RT_H, RT_A}},
+    {0x68, {IT_LD, AT_R_R, RT_L, RT_B}},
+    {0x69, {IT_LD, AT_R_R, RT_L, RT_C}},
+    {0x6A, {IT_LD, AT_R_R, RT_L, RT_D}},
+    {0x6B, {IT_LD, AT_R_R, RT_L, RT_E}},
+    {0x6C, {IT_LD, AT_R_R, RT_L, RT_H}},
+    {0x6D, {IT_LD, AT_R_R, RT_L, RT_L}},
+    {0x6F, {IT_LD, AT_R_R, RT_L, RT_A}},
+    {0x78, {IT_LD, AT_R_R, RT_A, RT_B}},
+    {0x79, {IT_LD, AT_R_R, RT_A, RT_C}},
+    {0x7A, {IT_LD, AT_R_R, RT_A, RT_D}},
+    {0x7B, {IT_LD, AT_R_R, RT_A, RT_E}},
+    {0x7C, {IT_LD, AT_R_R, RT_A, RT_H}},
+    {0x7D, {IT_LD, AT_R_R, RT_A, RT_L}},
+    {0x7F, {IT_LD, AT_R_R, RT_A, RT_A}},
+    {0x32, {IT_LD, AT_HLD_R, RT_HL, RT_A}},
 
 };
 
@@ -93,5 +158,24 @@ std::unordered_map<register_type, std::string> reg_name_map = {
 };
 
 std::string register_name(register_type rt){
-    return reg_name_map.at(rt);
+    try{
+        return reg_name_map.at(rt);
+    } catch (const std::out_of_range& e){
+        return "--";
+    }
+}
+
+std::unordered_map<addres_type, std::string> addr_name_map = {
+    {AT_IMM16, "AT_IMM16"},
+    {AT_NO, "AT_NO"},
+    {AT_R, "AT_R"},
+    {AT_R_R, "AT_R_R"},
+    {AT_R_D16, "AT_R_D16"},
+    {AT_R_D8, "AT_R_D8"},
+    {AT_HLD_R, "AT_HLD_R"},
+
+};
+
+std::string addresing_name(addres_type at){
+    return addr_name_map.at(at);
 }

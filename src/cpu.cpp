@@ -21,6 +21,14 @@ void Cpu::fetch_data(){
         case AT_NO:
             return;
         
+        case AT_R_D8:{
+            this->fetched_data = bus.bus_read(this->pc);
+            emu_cycles(1);
+            this->pc++;
+            return;
+        }
+
+        case AT_R_D16:
         case AT_IMM16: {
             uint16_t lo = bus.bus_read(this->pc);
             emu_cycles(1);
@@ -47,6 +55,14 @@ void Cpu::fetch_data(){
             return;
         }
 
+        case AT_HLD_R: {
+            this->fetched_data = this->read_reg(this->cur_instruction->reg_2);
+            this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
+            this->destination_is_memory = true;
+            this->set_reg(RT_HL, this->read_reg(RT_HL) - 1);
+            return;
+        }
+
         default:
             printf("Unkonwn addresing type: %d (%02X)\n", this->cur_instruction->addr_type, this->cur_opcode);
             exit(-5);
@@ -68,8 +84,12 @@ void Cpu::execute(){
         case IT_LD:
             proc_ld();
             return;
+        case IT_XOR:
+            proc_xor();
+            return;
         default:
-            printf("Unknown instruction in execute: %d\n", this->cur_instruction->ins_type);
+            printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
+            exit(-7);
     }
 }
 
@@ -79,10 +99,13 @@ bool Cpu::cpu_step(){
     fetch_instruction();
     fetch_data();
 
-    printf("%04X: %-8s (%02X, %02X, %02X) A: %02X B: %02X C: %02X D: %02X E: %02X H: %02X L: %02X FLAGS: Z: %d N: %d H: %d C: %d\n", 
+    printf("%04X: %-6s %-8s %-3s %-3s (%02X, %02X, %02X)\t A: %02X\t B: %02X\t C: %02X\t D: %02X\t E: %02X\t H: %02X\t L: %02X\t FLAGS: Z: %d N: %d H: %d C: %d\n", 
         pc, 
         instruction_name(this->cur_instruction->ins_type).c_str(),
-        this->cur_opcode, this->bus.bus_read(this->pc + 1), this->bus.bus_read(this->pc + 2), 
+        addresing_name(this->cur_instruction->addr_type).c_str(),
+        register_name(this->cur_instruction->reg_1).c_str(),
+        register_name(this->cur_instruction->reg_2).c_str(),
+        this->cur_opcode, this->bus.bus_read(pc + 1), this->bus.bus_read(pc + 2), 
         this->a, this->b, this->c, this->d, this->e, this->h, this->l,
         this->f.get_zero(), this->f.get_subtraction(), this->f.get_half_carry(), this->f.get_carry());
 
