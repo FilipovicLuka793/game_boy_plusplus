@@ -8,6 +8,15 @@
 std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x00, {IT_NOP, AT_NO}},
     {0xC3, {IT_JP, AT_IMM16}},
+    //AND
+    {0xA0, {IT_AND, AT_R, RT_B}},
+    {0xA1, {IT_AND, AT_R, RT_C}},
+    {0xA2, {IT_AND, AT_R, RT_D}},
+    {0xA3, {IT_AND, AT_R, RT_E}},
+    {0xA4, {IT_AND, AT_R, RT_H}},
+    {0xA5, {IT_AND, AT_R, RT_L}},
+    {0xA7, {IT_AND, AT_R, RT_A}},
+    //XOR
     {0xA8, {IT_XOR, AT_R, RT_B}},
     {0xA9, {IT_XOR, AT_R, RT_C}},
     {0xAA, {IT_XOR, AT_R, RT_D}},
@@ -15,6 +24,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xAC, {IT_XOR, AT_R, RT_H}},
     {0xAD, {IT_XOR, AT_R, RT_L}},
     {0xAF, {IT_XOR, AT_R, RT_A}},
+    //LD
     {0x01, {IT_LD, AT_R_D16, RT_BC}},
     {0x11, {IT_LD, AT_R_D16, RT_DE}},
     {0x21, {IT_LD, AT_R_D16, RT_HL}},

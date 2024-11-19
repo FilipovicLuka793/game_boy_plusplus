@@ -87,6 +87,9 @@ void Cpu::execute(){
         case IT_XOR:
             proc_xor();
             return;
+        case IT_AND:
+            proc_and();
+            return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);

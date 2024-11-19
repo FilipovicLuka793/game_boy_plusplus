@@ -36,3 +36,9 @@ void Cpu::proc_xor(){
     this->set_reg(RT_A, this->fetched_data);
     set_flags(this->a == 0, 0, 0, 0);
 }
+
+void Cpu::proc_and(){
+    this->fetched_data &= this->fetched_data;
+    this->set_reg(RT_A, this->fetched_data);
+    set_flags(this->a == 0, 0, 1, 0);
+}
