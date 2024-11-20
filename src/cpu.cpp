@@ -39,10 +39,49 @@ void Cpu::fetch_data(){
             return;
         }
 
-        case AT_MEMR: {
-            //TODO
-            this->destination_is_memory = true;
+        case AT_R_MR: {
+            uint16_t addr = this->read_reg(this->cur_instruction->reg_2);
+            if(this->cur_instruction->reg_2 == RT_C){
+                addr |= 0xFF00;
+            }
+            this->fetched_data = this->bus.bus_read(addr);
+            emu_cycles(1);
+            return;
+        }
+
+        case AT_R_HLI: {
+            uint16_t addr = this->read_reg(this->cur_instruction->reg_2);
+            this->fetched_data = this->bus.bus_read(addr);
+            emu_cycles(1);
+            this->set_reg(RT_HL, this->read_reg(RT_HL) + 1);
+            return;
+        }
+
+        case AT_R_HLD: {
+            uint16_t addr = this->read_reg(this->cur_instruction->reg_2);
+            this->fetched_data = this->bus.bus_read(addr);
+            emu_cycles(1);
+            this->set_reg(RT_HL, this->read_reg(RT_HL) - 1);
+            return;
+        }
+
+        case AT_MR_R: {
+            this->fetched_data = this->read_reg(this->cur_instruction->reg_2);
             this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
+            this->destination_is_memory = true;
+            if(this->cur_instruction->reg_1 == RT_C){
+                this->mem_destionation |= 0xFF00;
+            }
+            return;
+        }
+
+        case AT_MR_D8: {
+            this->fetched_data = this->bus.bus_read(this->pc);
+            emu_cycles(1);
+            this->pc++;
+            this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
+            this->destination_is_memory = true;
+            return;
         }
 
         case AT_R_R: {
@@ -60,6 +99,46 @@ void Cpu::fetch_data(){
             this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
             this->destination_is_memory = true;
             this->set_reg(RT_HL, this->read_reg(RT_HL) - 1);
+            return;
+        }
+
+        case AT_HLI_R: {
+            this->fetched_data = this->read_reg(this->cur_instruction->reg_2);
+            this->mem_destionation = this->read_reg(this->cur_instruction->reg_1);
+            this->destination_is_memory = true;
+            this->set_reg(RT_HL, this->read_reg(RT_HL) + 1);
+            return;
+        }
+
+        case AT_D16_R:
+        case AT_A16_R: {
+            uint16_t lo = this->bus.bus_read(this->pc);
+            emu_cycles(1);
+            uint16_t hi = this->bus.bus_read(this->pc + 1);
+            emu_cycles(1);
+            this->mem_destionation = (hi << 8) | lo;
+            this->destination_is_memory = true;
+            this->pc += 2;
+            this->fetched_data = this->read_reg(this->cur_instruction->reg_2);
+            return;
+        }
+
+        case AT_R_A16: {
+            uint16_t lo = this->bus.bus_read(this->pc);
+            emu_cycles(1);
+            uint16_t hi = this->bus.bus_read(this->pc + 1);
+            emu_cycles(1);
+            uint16_t addr = (hi << 8) | lo;
+            this->pc += 2;
+            this->fetched_data = this->bus.bus_read(addr);
+            emu_cycles(1);
+            return;
+        }
+
+        case AT_HL_SPR: {
+            this->fetched_data = this->bus.bus_read(this->pc);
+            emu_cycles(1);
+            this->pc++;
             return;
         }
 
@@ -89,6 +168,9 @@ void Cpu::execute(){
             return;
         case IT_AND:
             proc_and();
+            return;
+        case IT_OR:
+            proc_or();
             return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);

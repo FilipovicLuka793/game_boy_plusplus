@@ -82,12 +82,23 @@ typedef enum {
     AT_NONE,
     AT_NO,
     AT_IMM16,
-    AT_MEMR,
     AT_R_R,
     AT_R,
     AT_R_D16,
     AT_R_D8,
-    AT_HLD_R
+    AT_HLD_R,
+    AT_HLI_R,
+    AT_MR_R,
+    AT_R_MR,
+    AT_R_HLI,
+    AT_R_HLD,
+    AT_MR_D8,
+    AT_R_A16,
+    AT_A16_R,
+    AT_D16_R,
+    AT_HL_SPR,
+    
+
 } addres_type;
 
 typedef struct{

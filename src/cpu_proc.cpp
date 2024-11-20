@@ -1,4 +1,5 @@
 
+#include <cstdint>
 #include <cstdio>
 #include "../inc/cpu.h" 
 
@@ -26,6 +27,16 @@ void Cpu::proc_ld(){
         } else{
             this->bus.bus_write(this->mem_destionation, this->fetched_data);
         }
+        emu_cycles(1);
+        return;
+    }
+
+    if(this->cur_instruction->addr_type == AT_HL_SPR){
+        int8_t h = (this->read_reg(this->cur_instruction->reg_2) & 0xF) + (this->fetched_data & 0xF) >= 0x10;
+        int8_t c = (this->read_reg(this->cur_instruction->reg_2) & 0xFF) + (this->fetched_data & 0xFF) >= 0x100;
+        this->set_flags(0, 0, h, c);
+        this->set_reg(this->cur_instruction->reg_1, this->read_reg(this->cur_instruction->reg_2) + (int8_t)this->fetched_data);
+        return;
     }
 
     this->set_reg(this->cur_instruction->reg_1, this->fetched_data);
@@ -42,3 +53,10 @@ void Cpu::proc_and(){
     this->set_reg(RT_A, this->fetched_data);
     set_flags(this->a == 0, 0, 1, 0);
 }
+
+void Cpu::proc_or(){
+    this->fetched_data |= this->fetched_data;
+    this->set_reg(RT_A, this->fetched_data);
+    set_flags(this->a == 0, 0, 0, 0);
+}
+
