@@ -124,6 +124,24 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xF9, {IT_LD, AT_R_R, RT_SP, RT_HL}},
     {0xF8, {IT_LD, AT_HL_SPR, RT_HL, RT_SP}},
     {0xF9, {IT_LD, AT_R_R, RT_SP, RT_HL}},
+    //INC
+    {0x04, {IT_INC, AT_R, RT_B}},
+    {0x14, {IT_INC, AT_R, RT_D}},
+    {0x24, {IT_INC, AT_R, RT_H}},
+    {0x0C, {IT_INC, AT_R, RT_C}},
+    {0x1C, {IT_INC, AT_R, RT_E}},
+    {0x2C, {IT_INC, AT_R, RT_L}},
+    {0x3C, {IT_INC, AT_R, RT_A}},
+
+    //DEC
+    {0x05, {IT_DEC, AT_R, RT_B}},
+    {0x15, {IT_DEC, AT_R, RT_D}},
+    {0x25, {IT_DEC, AT_R, RT_H}},
+    {0x0D, {IT_DEC, AT_R, RT_C}},
+    {0x1D, {IT_DEC, AT_R, RT_E}},
+    {0x2D, {IT_DEC, AT_R, RT_L}},
+    {0x3D, {IT_DEC, AT_R, RT_A}},
+
     
 };
 

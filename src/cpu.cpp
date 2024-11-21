@@ -172,6 +172,10 @@ void Cpu::execute(){
         case IT_OR:
             proc_or();
             return;
+        case IT_INC:
+            proc_inc();
+            return;
+
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);

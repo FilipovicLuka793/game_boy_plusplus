@@ -15,10 +15,6 @@ void Cpu::proc_jp(){
     emu_cycles(1);
 }
 
-void Cpu::proc_dec(){
-    //TODO
-}
-
 void Cpu::proc_ld(){
     if(this->destination_is_memory){
         if(this->cur_instruction->reg_1 >= RT_AF){
@@ -60,3 +56,20 @@ void Cpu::proc_or(){
     set_flags(this->a == 0, 0, 0, 0);
 }
 
+void Cpu::proc_inc(){
+    uint16_t val = read_reg(this->cur_instruction->reg_1) + 1;
+
+    set_reg(this->cur_instruction->reg_1, val);
+    val = read_reg(this->cur_instruction->reg_1);
+
+    set_flags(val == 0, 0, (val & 0x0F) == 0, -1);
+}
+
+void Cpu::proc_dec(){
+    uint16_t val = read_reg(this->cur_instruction->reg_1) - 1;
+
+    set_reg(this->cur_instruction->reg_1, val);
+    val = read_reg(this->cur_instruction->reg_1);
+
+    set_flags(val == 0, 1, (val & 0x0F) == 0x0F, -1);
+}
