@@ -1,21 +1,97 @@
 #include "../inc/bus.h"
 #include <cstdint>
+#include <cstdio>
 
 uint8_t Bus::bus_read(uint16_t addr){
-    if(addr >= 0x0000 && addr < 0x8000){
+    if(addr < 0x8000){
+        //ROM
         return this->cart.read_cart(addr);
     }
-    printf("Read not yet implemented\n");
-    exit(-2);
+    else if(addr < 0xA000){
+        //CHR RAM
+        printf("Read not yet implemented\n");
+        exit(-2);
+    }
+    else if(addr < 0xC000){
+        //Cartridge RAM
+        printf("Read not yet implemented\n");
+        exit(-2);
+    }
+    else if(addr < 0xE000){
+        //WRAM
+        return this->ram.wram_read(addr);
+    }
+    else if(addr < 0xFE00){
+        //RESERVED!!!
+        return 0;
+    }
+    else if(addr < 0xFEA0) {
+        //OAM
+        printf("Read not yet implemented\n");
+        exit(-2);
+    }
+    else if(addr < 0xFF00) {
+        //RESERVED!!!
+        return 0;
+    }
+    else if(addr < 0xFF80) {
+        //I/O registers
+        printf("Read not yet implemented\n");
+        exit(-2);
+    }
+    else if(addr == 0xFFFF) {
+        //IE register
+        printf("Read not yet implemented\n");
+        exit(-2);
+    }
+
+    return this->ram.hram_read(addr);
 }
 
 void Bus::bus_write(uint16_t addr, uint8_t val){
-    if(addr >= 0x0000 && addr < 0x8000){
+    if(addr < 0x8000){
         this->cart.write_cart(addr, val);
         return;
     }
-    printf("Write not yet implemented\n");
-    exit(-3);
+    else if(addr < 0xA000){
+        //CHR RAM
+        printf("Write not yet implemented\n");
+        exit(-3);
+    }
+    else if(addr < 0xC000){
+        //Cartridge RAM
+        printf("Write not yet implemented\n");
+        exit(-3);
+    }
+    else if(addr < 0xE000){
+        //WRAM
+        this->ram.wram_write(addr, val);
+        return;
+    }
+    else if(addr < 0xFE00){
+        //RESERVED!!!
+        return;
+    }
+    else if(addr < 0xFEA0) {
+        //OAM
+        printf("Write not yet implemented\n");
+        exit(-3);
+    }
+    else if(addr < 0xFF00) {
+        //RESERVED!!!
+        return;
+    }
+    else if(addr < 0xFF80) {
+        //I/O registers
+        printf("Write not yet implemented\n");
+        exit(-3);
+    }
+    else if(addr == 0xFFFF) {
+        //IE register
+        printf("Write not yet implemented\n");
+        exit(-3);
+    }
+    this->ram.hram_write(addr, val);
 }
 
 uint16_t Bus::bus_read16(uint16_t addr){

@@ -4,6 +4,7 @@
 #include "bus.h"
 #include "flag_reg.h"
 #include "instructions.h"
+#include "ram.h"
 #include <cstdint>
 #include <functional>
 
@@ -12,6 +13,7 @@ class Cpu {
     private:
 
     Bus& bus;
+    Ram& ram;
 
     uint8_t a; // Accumulator
     Flag_reg f; // Flags
@@ -89,7 +91,7 @@ class Cpu {
 
     public:
 
-    Cpu(Bus& bus): bus(bus) {}
+    Cpu(Bus& bus, Ram& ram): bus(bus), ram(ram) {}
 
     void cpu_init();
     bool cpu_step();
