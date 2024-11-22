@@ -73,3 +73,9 @@ void Cpu::proc_dec(){
 
     set_flags(val == 0, 1, (val & 0x0F) == 0x0F, -1);
 }
+
+void Cpu::proc_jr(){
+    int8_t val = (int8_t)(this->fetched_data & 0xFF);
+    uint16_t addr = this->pc + val;
+    go_to_addr(addr, false);
+}

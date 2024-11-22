@@ -142,6 +142,13 @@ void Cpu::fetch_data(){
             return;
         }
 
+        case AT_D8: {
+            this->fetched_data = this->bus.bus_read(this->pc);
+            emu_cycles(1);
+            this->pc++;
+            return;
+        }
+
         default:
             printf("Unkonwn addresing type: %d (%02X)\n", this->cur_instruction->addr_type, this->cur_opcode);
             exit(-5);
@@ -175,7 +182,9 @@ void Cpu::execute(){
         case IT_INC:
             proc_inc();
             return;
-
+        case IT_JR:
+            proc_jr();
+            return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);

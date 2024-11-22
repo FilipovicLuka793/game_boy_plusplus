@@ -1,5 +1,6 @@
 #include "../inc/cpu.h"
 #include <cstdint>
+#include <cstdio>
 
 uint16_t Cpu::read_reg(register_type rt){
     switch (rt) {
@@ -75,3 +76,31 @@ void Cpu::set_flags(int8_t z, int8_t n, int8_t h, int8_t c){
         this->f.set_carry(c);
     }
 }
+
+bool Cpu::check_con(){
+    bool z = this->f.get_zero();
+    bool c = this->f.get_carry();
+
+    switch (this->cur_instruction->con_type) {
+        case CT_NONE: return true;
+        case CT_Z: return z;
+        case CT_NZ: return !z;
+        case CT_C: return c;
+        case CT_NC: return !c;
+    }
+    return false;
+}
+
+void Cpu::go_to_addr(uint16_t addr, bool pc_push){
+    if(check_con()){
+        if(pc_push){
+            //TODO
+            printf("Pushing the PC to the stack not implemented\n");
+            exit(-9);
+        }
+
+        this->pc = addr;
+        emu_cycles(1);
+    }
+}
+

@@ -43,6 +43,8 @@ class Cpu {
 
     //Instruction processes
     void set_flags(int8_t z, int8_t n, int8_t h, int8_t c);
+    void go_to_addr(uint16_t addr, bool pc_push);
+    bool check_con();
 
     void proc_nop();
     void proc_jp();

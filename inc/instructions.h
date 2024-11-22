@@ -97,6 +97,7 @@ typedef enum {
     AT_A16_R,
     AT_D16_R,
     AT_HL_SPR,
+    AT_D8,
     
 
 } addres_type;

@@ -142,7 +142,12 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x2D, {IT_DEC, AT_R, RT_L}},
     {0x3D, {IT_DEC, AT_R, RT_A}},
 
-    
+    //JR
+    {0x20, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_NZ}},
+    {0x30, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_NC}},
+    {0x18, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_NONE}},
+    {0x28, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_Z}},
+    {0x38, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_C}},
 };
 
 instruction* instruction_by_opcode(uint8_t opcode){
@@ -239,6 +244,17 @@ std::unordered_map<addres_type, std::string> addr_name_map = {
     {AT_R_D16, "AT_R_D16"},
     {AT_R_D8, "AT_R_D8"},
     {AT_HLD_R, "AT_HLD_R"},
+    {AT_HLI_R, "AT_HLI_R"},
+    {AT_MR_R, "AT_MR_R"},
+    {AT_R_MR, "AT_R_MR"},
+    {AT_R_HLI, "AT_R_HLI"},
+    {AT_R_HLD, "AT_R_HLD"},
+    {AT_MR_D8, "AT_MR_D8"},
+    {AT_R_A16, "AT_R_A16"},
+    {AT_A16_R, "AT_A16_R"},
+    {AT_D16_R, "AT_D16_R"},
+    {AT_HL_SPR, "AT_HL_SPR"},
+    {AT_D8, "AT_D8"},
 
 };
 
