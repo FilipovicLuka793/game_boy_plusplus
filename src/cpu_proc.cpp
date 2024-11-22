@@ -79,3 +79,17 @@ void Cpu::proc_jr(){
     uint16_t addr = this->pc + val;
     go_to_addr(addr, false);
 }
+
+void Cpu::proc_di(){
+    this->int_master_enable = false;
+}
+
+void Cpu::proc_ldh(){
+    if(!this->destination_is_memory){
+        set_reg(this->cur_instruction->reg_1, this->bus.bus_read(this->fetched_data | 0xFF00));
+    }
+    else{
+        this->bus.bus_write(this->mem_destionation, this->a);
+    }
+    emu_cycles(1);
+}

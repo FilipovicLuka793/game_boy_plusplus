@@ -46,6 +46,7 @@ typedef enum {
     IT_RETI,
     IT_DI,
     IT_EI,
+    IT_LDH,
     //CB:
     IT_RLC,
     IT_RRC,
@@ -98,7 +99,8 @@ typedef enum {
     AT_D16_R,
     AT_HL_SPR,
     AT_D8,
-    
+    AT_A8_R,
+    AT_R_A8
 
 } addres_type;
 

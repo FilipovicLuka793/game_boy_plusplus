@@ -32,6 +32,8 @@ class Cpu {
     uint8_t cur_opcode;
     instruction* cur_instruction;
 
+    bool int_master_enable;
+
     void fetch_instruction();
     void fetch_data();
     void execute();
@@ -90,6 +92,7 @@ class Cpu {
     void proc_bit();
     void proc_res();
     void proc_set();
+    void proc_ldh();
 
     public:
 
@@ -98,7 +101,7 @@ class Cpu {
     void cpu_init();
     bool cpu_step();
 
-    
+    uint8_t get_ie_register();
 
 };
 

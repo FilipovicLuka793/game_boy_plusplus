@@ -149,6 +149,21 @@ void Cpu::fetch_data(){
             return;
         }
 
+        case AT_A8_R: {
+            this->mem_destionation = this->bus.bus_read(this->pc) | 0xFF00;
+            this->destination_is_memory = true;
+            emu_cycles(1);
+            this->pc++;
+            return;
+        }
+
+        case AT_R_A8: {
+            this->fetched_data = this->bus.bus_read(this->pc);
+            emu_cycles(1);
+            this->pc++;
+            return;
+        }
+
         default:
             printf("Unkonwn addresing type: %d (%02X)\n", this->cur_instruction->addr_type, this->cur_opcode);
             exit(-5);
@@ -184,6 +199,12 @@ void Cpu::execute(){
             return;
         case IT_JR:
             proc_jr();
+            return;
+        case IT_DI:
+            proc_di();
+            return;
+        case IT_LDH:
+            proc_ldh();
             return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);

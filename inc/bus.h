@@ -10,6 +10,9 @@ class Bus {
     Cartridge& cart;
     Ram& ram;
 
+    uint8_t ie_register;
+    
+
     public:
 
     Bus(Cartridge& cart, Ram& ram): cart(cart), ram(ram) {}
@@ -19,6 +22,9 @@ class Bus {
 
     uint16_t bus_read16(uint16_t addr);
     void bus_write16(uint16_t addr, uint16_t val);
+
+    uint8_t get_ie_reg();
+    void set_ie_reg(uint8_t val);
 
 };
 

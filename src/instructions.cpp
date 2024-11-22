@@ -8,6 +8,7 @@
 std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x00, {IT_NOP, AT_NO}},
     {0xC3, {IT_JP, AT_IMM16}},
+    {0xF3, {IT_DI, AT_NO}},
     //AND
     {0xA0, {IT_AND, AT_R, RT_B}},
     {0xA1, {IT_AND, AT_R, RT_C}},
@@ -124,6 +125,11 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xF9, {IT_LD, AT_R_R, RT_SP, RT_HL}},
     {0xF8, {IT_LD, AT_HL_SPR, RT_HL, RT_SP}},
     {0xF9, {IT_LD, AT_R_R, RT_SP, RT_HL}},
+    
+    //LDH
+    {0xE0, {IT_LDH, AT_A8_R, RT_NONE, RT_A}},
+    {0xF0, {IT_LDH, AT_R_A8, RT_A}},
+    
     //INC
     {0x04, {IT_INC, AT_R, RT_B}},
     {0x14, {IT_INC, AT_R, RT_D}},
@@ -193,6 +199,7 @@ std::unordered_map<instruction_type, std::string> ins_name_map = {
     {IT_RETI, "RETI"},
     {IT_DI, "DI"},
     {IT_EI, "EI"},
+    {IT_LDH, "LDH"},
     //CB:
     {IT_RLC, "RLC"},
     {IT_RRC, "RRC"},
@@ -255,7 +262,8 @@ std::unordered_map<addres_type, std::string> addr_name_map = {
     {AT_D16_R, "AT_D16_R"},
     {AT_HL_SPR, "AT_HL_SPR"},
     {AT_D8, "AT_D8"},
-
+    {AT_A8_R, "AT_A8_R"},
+    {AT_R_A8, "AT_R_A8"}
 };
 
 std::string addresing_name(addres_type at){

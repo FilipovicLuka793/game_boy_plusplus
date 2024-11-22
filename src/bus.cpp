@@ -41,8 +41,7 @@ uint8_t Bus::bus_read(uint16_t addr){
     }
     else if(addr == 0xFFFF) {
         //IE register
-        printf("Read not yet implemented\n");
-        exit(-2);
+        return get_ie_reg();
     }
 
     return this->ram.hram_read(addr);
@@ -55,12 +54,12 @@ void Bus::bus_write(uint16_t addr, uint8_t val){
     }
     else if(addr < 0xA000){
         //CHR RAM
-        printf("Write not yet implemented\n");
+        printf("Write not yet implemented: %04X\n", addr);
         exit(-3);
     }
     else if(addr < 0xC000){
         //Cartridge RAM
-        printf("Write not yet implemented\n");
+        printf("Write not yet implemented: %04X\n", addr);
         exit(-3);
     }
     else if(addr < 0xE000){
@@ -74,7 +73,7 @@ void Bus::bus_write(uint16_t addr, uint8_t val){
     }
     else if(addr < 0xFEA0) {
         //OAM
-        printf("Write not yet implemented\n");
+        printf("Write not yet implemented: %04X\n", addr);
         exit(-3);
     }
     else if(addr < 0xFF00) {
@@ -83,13 +82,13 @@ void Bus::bus_write(uint16_t addr, uint8_t val){
     }
     else if(addr < 0xFF80) {
         //I/O registers
-        printf("Write not yet implemented\n");
-        exit(-3);
+        printf("Write not yet implemented: %04X\n", addr);
+        //exit(-3);
+        return;
     }
     else if(addr == 0xFFFF) {
         //IE register
-        printf("Write not yet implemented\n");
-        exit(-3);
+        set_ie_reg(val);
     }
     this->ram.hram_write(addr, val);
 }
@@ -103,4 +102,12 @@ uint16_t Bus::bus_read16(uint16_t addr){
 void Bus::bus_write16(uint16_t addr, uint16_t val){
     bus_write(addr + 1, (val >> 8) & 0xFF);
     bus_write(addr, val & 0xFF);
+}
+
+uint8_t Bus::get_ie_reg(){
+    return this->ie_register;
+}
+
+void Bus::set_ie_reg(uint8_t val){
+    this->ie_register = val;
 }

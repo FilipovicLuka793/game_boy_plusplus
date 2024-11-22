@@ -104,3 +104,7 @@ void Cpu::go_to_addr(uint16_t addr, bool pc_push){
     }
 }
 
+uint8_t Cpu::get_ie_register(){
+    return this->bus.get_ie_reg();
+}
+
