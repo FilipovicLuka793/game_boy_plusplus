@@ -164,6 +164,14 @@ void Cpu::fetch_data(){
             return;
         }
 
+        case AT_MR: {
+            this->mem_destionation = read_reg(this->cur_instruction->reg_1);
+            this->destination_is_memory = true;
+            this->fetched_data = this->bus.bus_read(this->mem_destionation);
+            emu_cycles(1);
+            return;
+        }
+
         default:
             printf("Unkonwn addresing type: %d (%02X)\n", this->cur_instruction->addr_type, this->cur_opcode);
             exit(-5);
@@ -205,6 +213,39 @@ void Cpu::execute(){
             return;
         case IT_LDH:
             proc_ldh();
+            return;
+        case IT_STOP:
+            proc_stop();
+            return;
+        case IT_EI:
+            proc_ei();
+            return;
+        case IT_CP:
+            proc_cp();
+            return;
+        case IT_RLCA:
+            proc_rlca();
+            return;
+        case IT_RLA:
+            proc_rla();
+            return;
+        case IT_SCF:
+            proc_scf();
+            return;
+        case IT_CCF:
+            proc_ccf();
+            return;
+        case IT_CPL:
+            proc_cpl();
+            return;
+        case IT_RRCA:
+            proc_rrca();
+            return;
+        case IT_RRA:
+            proc_rra();
+            return;
+        case IT_CALL:
+            proc_call();
             return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);

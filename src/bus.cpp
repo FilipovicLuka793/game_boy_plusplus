@@ -9,12 +9,12 @@ uint8_t Bus::bus_read(uint16_t addr){
     }
     else if(addr < 0xA000){
         //CHR RAM
-        printf("Read not yet implemented\n");
+        printf("Read not yet implemented: %04X\n", addr);
         exit(-2);
     }
     else if(addr < 0xC000){
         //Cartridge RAM
-        printf("Read not yet implemented\n");
+        printf("Read not yet implemented: %04X\n", addr);
         exit(-2);
     }
     else if(addr < 0xE000){
@@ -27,7 +27,7 @@ uint8_t Bus::bus_read(uint16_t addr){
     }
     else if(addr < 0xFEA0) {
         //OAM
-        printf("Read not yet implemented\n");
+        printf("Read not yet implemented: %04X\n", addr);
         exit(-2);
     }
     else if(addr < 0xFF00) {
@@ -36,8 +36,8 @@ uint8_t Bus::bus_read(uint16_t addr){
     }
     else if(addr < 0xFF80) {
         //I/O registers
-        printf("Read not yet implemented\n");
-        exit(-2);
+        printf("Read not yet implemented: %04X\n", addr);
+        return 0;
     }
     else if(addr == 0xFFFF) {
         //IE register
