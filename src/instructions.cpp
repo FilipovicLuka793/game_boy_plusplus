@@ -212,12 +212,31 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xE5, {IT_PUSH, AT_R, RT_HL}},
     {0xF5, {IT_PUSH, AT_R, RT_AF}},
 
-    //Jumps/calls
+    //Calls
     {0xCD, {IT_CALL, AT_IMM16}},
     {0xCC, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_Z}},
     {0xDC, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_C}},
     {0xC4, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_NZ}},
     {0xD4, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_NC}},
+
+    //RET
+    {0xC0, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_NZ}},
+    {0xD0, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_NC}},
+    {0xC8, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_Z}},
+    {0xD8, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_C}},
+    {0xC9, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_NONE}},
+    {0xD9, {IT_RETI, AT_NO, RT_NONE, RT_NONE, CT_NONE}},
+
+    //RST
+    {0xC7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x00}},
+    {0xCF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x08}},
+    {0xD7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x10}},
+    {0xDF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x18}},
+    {0xE7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x20}},
+    {0xEF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x28}},
+    {0xF7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x30}},
+    {0xFF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x38}},
+
 };
 
 instruction* instruction_by_opcode(uint8_t opcode){

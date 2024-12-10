@@ -253,6 +253,15 @@ void Cpu::execute(){
         case IT_PUSH:
             proc_push();
             return;
+        case IT_RET:
+            proc_ret();
+            return;
+        case IT_RETI:
+            proc_reti();
+            return;
+        case IT_RST:
+            proc_rst();
+            return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);

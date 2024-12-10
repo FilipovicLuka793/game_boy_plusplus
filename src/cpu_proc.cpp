@@ -211,3 +211,29 @@ void Cpu::proc_push(){
 
     emu_cycles(1);
 }
+
+void Cpu::proc_ret(){
+    if(this->cur_instruction->con_type != CT_NONE){
+        emu_cycles(1);
+    }
+
+    if(check_con()){
+        uint16_t lo = stack_pop();
+        emu_cycles(1);
+        uint16_t hi = stack_pop();
+        emu_cycles(1);
+
+        uint16_t x = (hi << 8) | lo;
+        this->pc = x;
+        emu_cycles(1);
+    }
+}
+
+void Cpu::proc_reti(){
+    this->int_master_enable = true;
+    proc_ret();
+}
+
+void Cpu::proc_rst(){
+    go_to_addr(this->cur_instruction->param, true);
+}
