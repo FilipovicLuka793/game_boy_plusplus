@@ -201,8 +201,23 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x28, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_Z}},
     {0x38, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_C}},
 
+    //PUSH/POP
+    {0xC1, {IT_POP, AT_R, RT_BC}},
+    {0xD1, {IT_POP, AT_R, RT_DE}},
+    {0xE1, {IT_POP, AT_R, RT_HL}},
+    {0xF1, {IT_POP, AT_R, RT_AF}},
+
+    {0xC5, {IT_PUSH, AT_R, RT_BC}},
+    {0xD5, {IT_PUSH, AT_R, RT_DE}},
+    {0xE5, {IT_PUSH, AT_R, RT_HL}},
+    {0xF5, {IT_PUSH, AT_R, RT_AF}},
+
     //Jumps/calls
     {0xCD, {IT_CALL, AT_IMM16}},
+    {0xCC, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_Z}},
+    {0xDC, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_C}},
+    {0xC4, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_NZ}},
+    {0xD4, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_NC}},
 };
 
 instruction* instruction_by_opcode(uint8_t opcode){

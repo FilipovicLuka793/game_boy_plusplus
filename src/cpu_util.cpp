@@ -94,9 +94,8 @@ bool Cpu::check_con(){
 void Cpu::go_to_addr(uint16_t addr, bool pc_push){
     if(check_con()){
         if(pc_push){
-            //TODO
-            printf("Pushing the PC to the stack not implemented\n");
-            exit(-9);
+            emu_cycles(2);
+            stack_push16(this->pc);
         }
 
         this->pc = addr;

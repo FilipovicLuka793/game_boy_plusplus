@@ -183,5 +183,31 @@ void Cpu::proc_rra(){
 }
 
 void Cpu::proc_call(){
-    
+    this->go_to_addr(this->fetched_data, true);
+}
+
+void Cpu::proc_pop(){
+    uint16_t lo = stack_pop();
+    emu_cycles(1);
+    uint16_t hi = stack_pop();
+    emu_cycles(1);
+
+    uint16_t x = (hi << 8) | lo;
+    set_reg(this->cur_instruction->reg_1, x);
+
+    if(this->cur_instruction->reg_1 == RT_AF){
+        set_reg(this->cur_instruction->reg_1, x & 0xFFF0);
+    }
+}
+
+void Cpu::proc_push(){
+    uint16_t hi = (read_reg(cur_instruction->reg_1) >> 8) & 0xFF;
+    emu_cycles(1);
+    stack_push(hi);
+
+    uint16_t lo = read_reg(cur_instruction->reg_1) & 0xFF;
+    emu_cycles(1);
+    stack_push(lo);
+
+    emu_cycles(1);
 }
