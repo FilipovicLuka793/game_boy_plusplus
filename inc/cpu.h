@@ -94,6 +94,8 @@ class Cpu {
     void proc_set();
     void proc_ldh();
 
+    bool halted = false;
+
     public:
 
     Cpu(Bus& bus, Ram& ram): bus(bus), ram(ram) {}

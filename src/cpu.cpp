@@ -262,6 +262,21 @@ void Cpu::execute(){
         case IT_RST:
             proc_rst();
             return;
+        case IT_ADD:
+            proc_add();
+            return;
+        case IT_ADC:
+            proc_adc();
+            return;
+        case IT_SUB:
+            proc_sub();
+            return;
+        case IT_SBC:
+            proc_sbc();
+            return;
+        case IT_HALT:
+            proc_halt();
+            return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);

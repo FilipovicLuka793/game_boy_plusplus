@@ -15,6 +15,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x3F, {IT_CCF}},
     {0x0F, {IT_RRCA}},
     {0x1F, {IT_RRA}},
+    {0x76, {IT_HALT}},
     
     //JP
     {0xC3, {IT_JP, AT_IMM16}},
@@ -38,6 +39,8 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xA6, {IT_AND, AT_R_MR, RT_A, RT_HL}},
     {0xA7, {IT_AND, AT_R, RT_A}},
 
+    {0xE6, {IT_AND, AT_R_D8, RT_A}},
+
     //XOR
     {0xA8, {IT_XOR, AT_R, RT_B}},
     {0xA9, {IT_XOR, AT_R, RT_C}},
@@ -48,6 +51,8 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xAE, {IT_XOR, AT_R_MR, RT_A, RT_HL}},
     {0xAF, {IT_XOR, AT_R, RT_A}},
 
+    {0xEE, {IT_XOR, AT_R_D8, RT_A}},
+
     //OR
     {0xB0, {IT_OR, AT_R, RT_B}},
     {0xB1, {IT_OR, AT_R, RT_C}},
@@ -57,6 +62,8 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xB5, {IT_OR, AT_R, RT_L}},
     {0xB6, {IT_OR, AT_R_MR, RT_A, RT_HL}},
     {0xB7, {IT_OR, AT_R, RT_A}},
+
+    {0xF6, {IT_OR, AT_R_D8, RT_A}},
 
     //CP
     {0xB8, {IT_CP, AT_R, RT_B}},
@@ -237,6 +244,59 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xF7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x30}},
     {0xFF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x38}},
 
+    //ADD
+    {0x09, {IT_ADD, AT_R_R, RT_HL, RT_BC}},
+    {0x19, {IT_ADD, AT_R_R, RT_HL, RT_DE}},
+    {0x29, {IT_ADD, AT_R_R, RT_HL, RT_HL}},
+    {0x39, {IT_ADD, AT_R_R, RT_HL, RT_SP}},
+
+    {0x80, {IT_ADD, AT_R_R, RT_A, RT_B}},
+    {0x81, {IT_ADD, AT_R_R, RT_A, RT_C}},
+    {0x82, {IT_ADD, AT_R_R, RT_A, RT_D}},
+    {0x83, {IT_ADD, AT_R_R, RT_A, RT_E}},
+    {0x84, {IT_ADD, AT_R_R, RT_A, RT_H}},
+    {0x85, {IT_ADD, AT_R_R, RT_A, RT_L}},
+    {0x86, {IT_ADD, AT_R_MR, RT_A, RT_HL}},
+    {0x87, {IT_ADD, AT_R_R, RT_A, RT_A}},
+
+    {0xC6, {IT_ADD, AT_R_D8, RT_A,}},
+    {0xE8, {IT_ADD, AT_R_D8, RT_SP}},
+
+    //ADC
+    {0x88, {IT_ADC, AT_R_R, RT_A, RT_B}},
+    {0x89, {IT_ADC, AT_R_R, RT_A, RT_C}},
+    {0x8A, {IT_ADC, AT_R_R, RT_A, RT_D}},
+    {0x8B, {IT_ADC, AT_R_R, RT_A, RT_E}},
+    {0x8C, {IT_ADC, AT_R_R, RT_A, RT_H}},
+    {0x8D, {IT_ADC, AT_R_R, RT_A, RT_L}},
+    {0x8E, {IT_ADC, AT_R_MR, RT_A, RT_HL}},
+    {0x8F, {IT_ADC, AT_R_R, RT_A, RT_A}},
+
+    {0xCE, {IT_ADC, AT_R_D8, RT_A}},
+
+    //SUB
+    {0x90, {IT_SUB, AT_R_R, RT_A, RT_B}},
+    {0x91, {IT_SUB, AT_R_R, RT_A, RT_C}},
+    {0x92, {IT_SUB, AT_R_R, RT_A, RT_D}},
+    {0x93, {IT_SUB, AT_R_R, RT_A, RT_E}},
+    {0x94, {IT_SUB, AT_R_R, RT_A, RT_H}},
+    {0x95, {IT_SUB, AT_R_R, RT_A, RT_L}},
+    {0x96, {IT_SUB, AT_R_MR, RT_A, RT_HL}},
+    {0x97, {IT_SUB, AT_R_R, RT_A, RT_A}},
+
+    {0xD6, {IT_SUB, AT_R_D8, RT_A}},
+
+    //SBC
+    {0x98, {IT_SBC, AT_R_R, RT_A, RT_B}},
+    {0x99, {IT_SBC, AT_R_R, RT_A, RT_C}},
+    {0x9A, {IT_SBC, AT_R_R, RT_A, RT_D}},
+    {0x9B, {IT_SBC, AT_R_R, RT_A, RT_E}},
+    {0x9C, {IT_SBC, AT_R_R, RT_A, RT_H}},
+    {0x9D, {IT_SBC, AT_R_R, RT_A, RT_L}},
+    {0x9E, {IT_SBC, AT_R_MR, RT_A, RT_HL}},
+    {0x9F, {IT_SBC, AT_R_R, RT_A, RT_A}},
+
+    {0xDE, {IT_SBC, AT_R_D8, RT_A}},
 };
 
 instruction* instruction_by_opcode(uint8_t opcode){

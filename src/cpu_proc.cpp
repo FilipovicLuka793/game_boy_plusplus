@@ -237,3 +237,74 @@ void Cpu::proc_reti(){
 void Cpu::proc_rst(){
     go_to_addr(this->cur_instruction->param, true);
 }
+
+void Cpu::proc_add(){
+    uint32_t val;
+
+    bool is_16bit = cur_instruction->reg_1 >= RT_AF;
+
+    if(is_16bit) emu_cycles(1);
+
+    if(cur_instruction->reg_1 == RT_SP){
+        val = read_reg(cur_instruction->reg_1) + (int8_t)fetched_data;
+    }
+    else {
+        val = read_reg(cur_instruction->reg_1) + fetched_data;
+    }
+
+    int8_t z = (val & 0xFF) == 0;
+    int8_t h = (read_reg(cur_instruction->reg_1) & 0xF) + (fetched_data & 0xF) >= 0x10;
+    int8_t c = (int)(read_reg(cur_instruction->reg_1) & 0xFF) + (int)(fetched_data & 0xFF) >= 0x100;
+
+    if(is_16bit){
+        z = -1;
+        h = (read_reg(cur_instruction->reg_1) & 0xFFF) + (fetched_data & 0xFFF) >= 0x1000;
+        c = (((uint32_t)read_reg(cur_instruction->reg_1)) + ((uint32_t)fetched_data)) >= 0x10000;
+    }
+
+    if(cur_instruction->reg_1 == RT_SP){
+        z = 0;
+        h = (read_reg(cur_instruction->reg_1) & 0xF) + (fetched_data & 0xF) >= 0x10;
+        c = (int)(read_reg(cur_instruction->reg_1) & 0xFF) + (int)(fetched_data & 0xFF) >= 0x100;
+    }
+
+    set_reg(cur_instruction->reg_1, val & 0xFFFF);
+    set_flags(z, 0, h, c);
+}
+
+void Cpu::proc_adc(){
+    uint16_t fe = fetched_data;
+    uint16_t ra = this->a;
+    uint16_t c = this->f.get_carry();
+
+    this->a = (ra + fe + c) & 0xFF;
+
+    set_flags(this->a == 0, 0, (ra & 0xF) + (fe & 0xF) + c > 0xF, ra + fe + c > 0xFF);
+}
+
+void Cpu::proc_sub(){
+    uint16_t val = read_reg(cur_instruction->reg_1) - fetched_data;
+
+    int8_t z = val == 0;
+    int8_t h = ((int)read_reg(cur_instruction->reg_1) & 0xF) - ((int)fetched_data & 0xF) < 0;
+    int8_t c = ((int)read_reg(cur_instruction->reg_1)) - ((int)fetched_data) < 0;
+
+    set_reg(cur_instruction->reg_1, val);
+    set_flags(z, 1, h, c);
+}
+
+void Cpu::proc_sbc(){
+    uint8_t ca = this->f.get_carry();
+    uint8_t val = fetched_data + ca;
+
+    int8_t z = read_reg(cur_instruction->reg_1) - val == 0;
+    int8_t h = ((int)read_reg(cur_instruction->reg_1) & 0xF) - ((int)fetched_data & 0xF) - ((int)ca) < 0;
+    int8_t c = ((int)read_reg(cur_instruction->reg_1)) - ((int)fetched_data) - ((int)ca) < 0;
+
+    set_reg(cur_instruction->reg_1, read_reg(cur_instruction->reg_1) - val);
+    set_flags(z, 1, h, c);
+}
+
+void Cpu::proc_halt(){
+    this->halted = true;
+}
