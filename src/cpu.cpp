@@ -277,6 +277,9 @@ void Cpu::execute(){
         case IT_HALT:
             proc_halt();
             return;
+        case IT_PREFIX:
+            proc_prefix();
+            return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);

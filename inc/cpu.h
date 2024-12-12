@@ -43,6 +43,9 @@ class Cpu {
     uint16_t read_reg(register_type rt);
     void set_reg(register_type tr, uint16_t val);
 
+    uint8_t read_reg_cb(register_type rt);
+    void set_reg_cb(register_type, uint8_t val);
+
     //Instruction processes
     void set_flags(int8_t z, int8_t n, int8_t h, int8_t c);
     void go_to_addr(uint16_t addr, bool pc_push);

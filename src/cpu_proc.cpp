@@ -308,3 +308,120 @@ void Cpu::proc_sbc(){
 void Cpu::proc_halt(){
     this->halted = true;
 }
+
+register_type register_lookup[] = {
+    RT_B,
+    RT_C,
+    RT_D,
+    RT_E,
+    RT_H,
+    RT_L,
+    RT_HL,
+    RT_A
+};
+
+void Cpu::proc_prefix(){
+    uint8_t op = fetched_data;
+    register_type reg = register_lookup[op & 0b111];
+    uint8_t bit = (op >> 3) & 0b111;
+    uint8_t bit_op = (op >> 6) & 0b111;
+    uint8_t reg_val = read_reg_cb(reg);
+
+    emu_cycles(1);
+
+    if(reg == RT_HL){
+        emu_cycles(2);
+    }
+
+    switch (bit_op) {
+        case 1:
+            //BIT
+            set_flags(!(reg_val & (1 << bit)), 0, 1, -1);
+            return;
+        case 2:
+            //RST
+            reg_val &= ~(1 << bit);
+            set_reg_cb(reg, reg_val);
+            return;
+        case 3:
+            //SET
+            reg_val |= (1 << bit);
+            set_reg_cb(reg, reg_val);
+            return;
+    }
+    
+    bool flag_c = this->f.get_carry();
+
+    switch (bit) {
+        case 0: {
+            //RLC
+            bool set_c = false;
+            uint8_t res = (reg_val << 1) & 0xFF;
+
+            if((reg_val & (1 << 7)) != 0){
+                res |= 1;
+                set_c = true;
+            }
+
+            set_reg_cb(reg, res);
+            set_flags(res == 0, 0, 0, set_c);
+            return;
+        }
+        case 1: {
+            //RRC
+            uint8_t old = reg_val;
+            reg_val >>=1;
+            reg_val |= (old << 7);
+            set_reg_cb(reg, reg_val);
+            set_flags(!reg_val, 0, 0, old & 1);
+            return;
+        }
+        case 2: {
+            //Rl
+            uint8_t old = reg_val;
+            reg_val <<= 1;
+            reg_val |= flag_c;
+            set_reg_cb(reg, reg_val);
+            set_flags(!reg_val, 0, 0, !!(old & 0x80));
+            return;
+        }
+        case 3: {
+            //RR
+            uint8_t old = reg_val;
+            reg_val >>= 1;
+            reg_val |= (flag_c << 7);
+            set_reg_cb(reg, reg_val);
+            set_flags(!reg_val, 0, 0, old & 1);
+            return;
+        }
+        case 4: {
+            //SLA
+            uint8_t old = reg_val;
+            reg_val <<= 1;
+            set_reg_cb(reg, reg_val);
+            set_flags(!reg_val, 0, 0, !!(old & 0x80));
+            return;
+        }
+        case 5: {
+            //SRA
+            uint8_t old = (int8_t)reg_val >> 1;
+            set_reg_cb(reg, old);
+            set_flags(!old, 0, 0, reg_val & 1);
+            return;
+        }
+        case 6: {
+            //SWAP
+            reg_val = ((reg_val & 0xF0) >> 4) | ((reg_val & 0xF) << 4);
+            set_reg_cb(reg, reg_val);
+            set_flags(reg_val == 0, 0, 0, 0);
+            return;
+        }
+        case 7: {
+            //SRL
+            uint8_t old = reg_val >> 1;
+            set_reg_cb(reg, old);
+            set_flags(!old, 0, 0, reg_val & 1);
+            return;
+        }
+    }
+}

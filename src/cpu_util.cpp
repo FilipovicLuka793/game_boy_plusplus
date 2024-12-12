@@ -1,6 +1,7 @@
 #include "../inc/cpu.h"
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 
 uint16_t Cpu::read_reg(register_type rt){
     switch (rt) {
@@ -100,6 +101,42 @@ void Cpu::go_to_addr(uint16_t addr, bool pc_push){
 
         this->pc = addr;
         emu_cycles(1);
+    }
+}
+
+uint8_t Cpu::read_reg_cb(register_type rt){
+    switch (rt) {
+        case RT_A: return this->a;
+        case RT_B: return this->b;
+        case RT_C: return this->c;
+        case RT_D: return this->d;
+        case RT_E: return this->e;
+        case RT_H: return this->h;
+        case RT_L: return this->l;
+        case RT_HL: {
+            return this->bus.bus_read(read_reg(RT_HL));
+        }
+        default: {
+            printf("ERROR: INVALID CB REG: %d\n", rt);
+            exit(-8);
+        }
+    }
+}
+
+void Cpu::set_reg_cb(register_type rt, uint8_t val){
+    switch (rt) {
+        case RT_A: this->a = val & 0xFF; break;
+        case RT_B: this->b = val & 0xFF; break;;
+        case RT_C: this->c = val & 0xFF; break;;
+        case RT_D: this->d = val & 0xFF; break;;
+        case RT_E: this->e = val & 0xFF; break;;
+        case RT_H: this->h = val & 0xFF; break;;
+        case RT_L: this->l = val & 0xFF; break;;
+        case RT_HL: this->bus.bus_write(read_reg(RT_HL), val); break;
+        default: {
+            printf("ERROR: INVALID CB REG: %d\n", rt);
+            exit(-8);
+        }
     }
 }
 
