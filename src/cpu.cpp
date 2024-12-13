@@ -280,6 +280,9 @@ void Cpu::execute(){
         case IT_PREFIX:
             proc_prefix();
             return;
+        case IT_DAA:
+            proc_daa();
+            return;
         default:
             printf("Unknown instruction in execute: %02X\n", this->cur_opcode);
             exit(-7);
@@ -287,25 +290,67 @@ void Cpu::execute(){
 }
 
 bool Cpu::cpu_step(){
-    uint16_t pc = this->pc;
+    if(!this->halted){
+        uint16_t pc = this->pc;
 
-    fetch_instruction();
-    fetch_data();
+        fetch_instruction();
+        fetch_data();
 
-    printf("%04X: %-6s %-8s %-3s %-3s (%02X, %02X, %02X)\t A: %02X\t B: %02X\t C: %02X\t D: %02X\t E: %02X\t H: %02X\t L: %02X\t FLAGS: Z: %d N: %d H: %d C: %d\n", 
-        pc, 
-        instruction_name(this->cur_instruction->ins_type).c_str(),
-        addresing_name(this->cur_instruction->addr_type).c_str(),
-        register_name(this->cur_instruction->reg_1).c_str(),
-        register_name(this->cur_instruction->reg_2).c_str(),
-        this->cur_opcode, this->bus.bus_read(pc + 1), this->bus.bus_read(pc + 2), 
-        this->a, this->b, this->c, this->d, this->e, this->h, this->l,
-        this->f.get_zero(), this->f.get_subtraction(), this->f.get_half_carry(), this->f.get_carry());
+        printf("%08lX - %04X: %-6s %-8s %-3s %-3s (%02X, %02X, %02X)\t A: %02X\t B: %02X\t C: %02X\t D: %02X\t E: %02X\t H: %02X\t L: %02X\t FLAGS: Z: %d N: %d H: %d C: %d\n", 
+            *ticks,
+            pc, 
+            instruction_name(this->cur_instruction->ins_type).c_str(),
+            addresing_name(this->cur_instruction->addr_type).c_str(),
+            register_name(this->cur_instruction->reg_1).c_str(),
+            register_name(this->cur_instruction->reg_2).c_str(),
+            this->cur_opcode, this->bus.bus_read(pc + 1), this->bus.bus_read(pc + 2), 
+            this->a, this->b, this->c, this->d, this->e, this->h, this->l,
+            this->f.get_zero(), this->f.get_subtraction(), this->f.get_half_carry(), this->f.get_carry());
 
-    execute();
+        execute();
+    }
+    else {
+        emu_cycles(1);
+        if(this->int_flags){
+            this->halted = true;
+        }
+    }
+
+    if(this->int_master_enable){
+        handle_interrupts();
+        this->enabling_ime = false;
+    }
+
+    if(this->enabling_ime){
+        this->int_master_enable = true;
+    }
     return true;
 }
 
 void Cpu::emu_cycles(int count){
 
+}
+
+void Cpu::int_handle(uint16_t addr){
+    stack_push16(this->pc);
+    this->pc = addr;
+}
+
+bool Cpu::int_check(uint16_t addr, interrupts_type it){
+    if(this->int_flags & it && this->get_ie_register() & it){
+        int_handle(addr);
+        this->int_flags &= ~it;
+        this->halted = false;
+        this->int_master_enable = false;
+        return true;
+    }
+    return false;
+}
+
+void Cpu::handle_interrupts(){
+    if(int_check(0x40, IT_VBLANK)) {}
+    else if (int_check(0x48, IT_LCD_STAT)) {}
+    else if (int_check(0x50, IT_TIMER)) {}
+    else if (int_check(0x58, IT_SERIAL)) {}
+    else if (int_check(0x60, IT_JOYPAD)) {}
 }

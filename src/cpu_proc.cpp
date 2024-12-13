@@ -128,7 +128,7 @@ void Cpu::proc_di(){
 }
 
 void Cpu::proc_ei(){
-    this->int_master_enable = true;
+    this->enabling_ime = true;
 }
 
 void Cpu::proc_ldh(){
@@ -424,4 +424,27 @@ void Cpu::proc_prefix(){
             return;
         }
     }
+    printf("ERROR: CB instruction invalide\n");
+    exit(-10);
+}
+
+void Cpu::proc_daa(){
+    uint8_t u = 0;
+    int fc = 0;
+
+    bool n = this->f.get_subtraction();
+    bool h = this->f.get_half_carry();
+    bool c = this->f.get_carry();
+
+    if(h || (!n && (this->a & 0xF) > 9)){
+        u = 6;
+    }
+
+    if(c || (!n && this->a > 0x99)){
+        u |= 0x60;
+        fc = 1;
+    }
+
+    this->a += n ? -u : u;
+    set_flags(this->a == 0, -1, 0, fc);
 }

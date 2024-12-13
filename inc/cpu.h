@@ -33,6 +33,7 @@ class Cpu {
     instruction* cur_instruction;
 
     bool int_master_enable;
+    bool enabling_ime;
 
     void fetch_instruction();
     void fetch_data();
@@ -97,11 +98,26 @@ class Cpu {
     void proc_set();
     void proc_ldh();
 
+    //Interupts
+    typedef enum {
+        IT_VBLANK = 1,
+        IT_LCD_STAT = 2,
+        IT_TIMER = 4,
+        IT_SERIAL = 8,
+        IT_JOYPAD = 16
+    } interrupts_type;
+
+    void int_handle(uint16_t addr);
+    bool int_check(uint16_t addr, interrupts_type it);
+    void handle_interrupts();
+
     bool halted = false;
+    uint64_t* ticks;
+    uint8_t int_flags;
 
     public:
 
-    Cpu(Bus& bus, Ram& ram): bus(bus), ram(ram) {}
+    Cpu(Bus& bus, Ram& ram, uint64_t* ticks): bus(bus), ram(ram), ticks(ticks) {}
 
     void cpu_init();
     bool cpu_step();

@@ -17,6 +17,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x1F, {IT_RRA}},
     {0x76, {IT_HALT}},
     {0xCB, {IT_PREFIX, AT_D8}},
+    {0x27, {IT_DAA}},
     
     //JP
     {0xC3, {IT_JP, AT_IMM16}},
