@@ -39,7 +39,7 @@ class Cpu {
     void fetch_data();
     void execute();
 
-    void emu_cycles(int count);
+    std::function<void(int)> emu_cycles;
 
     uint16_t read_reg(register_type rt);
     void set_reg(register_type tr, uint16_t val);
@@ -113,11 +113,10 @@ class Cpu {
 
     bool halted = false;
     uint64_t* ticks;
-    uint8_t int_flags;
 
     public:
 
-    Cpu(Bus& bus, Ram& ram, uint64_t* ticks): bus(bus), ram(ram), ticks(ticks) {}
+    Cpu(Bus& bus, Ram& ram, uint64_t* ticks, std::function<void(int)> func): bus(bus), ram(ram), ticks(ticks), emu_cycles(func) {}
 
     void cpu_init();
     bool cpu_step();

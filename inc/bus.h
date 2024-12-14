@@ -4,6 +4,7 @@
 #include "cartridge.h"
 #include "ram.h"
 #include <cstdint>
+#include <vector>
 class Bus {
     private:
 
@@ -11,6 +12,13 @@ class Bus {
     Ram& ram;
 
     uint8_t ie_register;
+
+    char serial_data[2];
+
+    uint8_t int_flags;
+
+    uint8_t io_read(uint16_t addr);
+    void io_write(uint16_t addr, uint8_t val);
     
 
     public:
@@ -25,6 +33,9 @@ class Bus {
 
     uint8_t get_ie_reg();
     void set_ie_reg(uint8_t val);
+
+    uint8_t get_int_flags();
+    void set_int_flags(uint8_t val);
 
 };
 

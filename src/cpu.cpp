@@ -311,7 +311,7 @@ bool Cpu::cpu_step(){
     }
     else {
         emu_cycles(1);
-        if(this->int_flags){
+        if(bus.get_int_flags()){
             this->halted = true;
         }
     }
@@ -327,19 +327,15 @@ bool Cpu::cpu_step(){
     return true;
 }
 
-void Cpu::emu_cycles(int count){
-
-}
-
 void Cpu::int_handle(uint16_t addr){
     stack_push16(this->pc);
     this->pc = addr;
 }
 
 bool Cpu::int_check(uint16_t addr, interrupts_type it){
-    if(this->int_flags & it && this->get_ie_register() & it){
+    if(bus.get_int_flags() & it && this->get_ie_register() & it){
         int_handle(addr);
-        this->int_flags &= ~it;
+        bus.set_int_flags(bus.get_int_flags() & ~it);
         this->halted = false;
         this->int_master_enable = false;
         return true;

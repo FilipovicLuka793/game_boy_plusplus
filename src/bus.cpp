@@ -1,6 +1,47 @@
 #include "../inc/bus.h"
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
+
+uint8_t Bus::io_read(uint16_t addr){
+    if(addr == 0xFF01){
+        return this->serial_data[0];
+    }
+    else if(addr == 0xFF02){
+        return this->serial_data[1];
+    }
+    else if(addr >= 0xFF04 && addr <= 0xFF07){
+        //TODO
+        exit(-10);
+    }
+    else if (addr == 0xFF0F) {
+        return this->int_flags;
+    }
+
+    printf("ERROR: UNSUPPORTED bus_read(%04X)\n", addr);
+    return 0;
+}
+
+void Bus::io_write(uint16_t addr, uint8_t val){
+    if(addr == 0xFF01){
+        serial_data[0] = val;
+        return;
+    }
+    else if(addr == 0xFF02) {
+        serial_data[1] = val;
+        return;
+    }
+    else if (addr >= 0xFF04 && addr <= 0xFF07) {
+        //TODO
+        exit(-10);
+    }
+    else if (addr == 0xFF0F) {
+        this->int_flags = val;
+        return;
+    }
+    printf("ERROR: UNSUPPORTED bus_write(%04X)\n", addr);
+
+}
 
 uint8_t Bus::bus_read(uint16_t addr){
     if(addr < 0x8000){
@@ -36,8 +77,7 @@ uint8_t Bus::bus_read(uint16_t addr){
     }
     else if(addr < 0xFF80) {
         //I/O registers
-        printf("Read not yet implemented: %04X\n", addr);
-        return 0x91;
+        return this->io_read(addr);
     }
     else if(addr == 0xFFFF) {
         //IE register
@@ -78,8 +118,7 @@ void Bus::bus_write(uint16_t addr, uint8_t val){
     }
     else if(addr < 0xFF80) {
         //I/O registers
-        printf("Write not yet implemented: %04X\n", addr);
-        //exit(-3);
+        this->io_write(addr, val);
     }
     else if(addr == 0xFFFF) {
         //IE register
@@ -108,4 +147,12 @@ uint8_t Bus::get_ie_reg(){
 
 void Bus::set_ie_reg(uint8_t val){
     this->ie_register = val;
+}
+
+uint8_t Bus::get_int_flags(){
+    return this->int_flags;
+}
+
+void Bus::set_int_flags(uint8_t val){
+    this->int_flags = val;
 }

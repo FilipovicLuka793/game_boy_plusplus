@@ -17,14 +17,14 @@ EXEC = $(EXEC_DIR)/emu
 all: $(EXEC)
 
 $(EXEC): $(OBJ_FILES)
-	@mkdir -p $(EXEC_DIR)
-	$(CXX) $(OBJ_FILES) -o $(EXEC) $(LDFLAGS)
+	@mkdir -p $(EXEC_DIR)      # Create bin directory if it doesn't exist
+	$(CXX) $(OBJ_FILES) -o $(EXEC) $(LDFLAGS)  # Link object files with SDL2 and SDL2_ttf
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	@mkdir -p $(OBJ_DIR)       # Create obj directory if it doesn't exist
+	$(CXX) $(CXXFLAGS) -c $< -o $@  # Compile source file into object file
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)  # Remove the build directory
 
 .PHONY: all clean

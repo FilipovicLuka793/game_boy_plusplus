@@ -12,6 +12,8 @@
 class Emulator {
     private:
 
+    friend class Cpu;
+
     Cartridge cart;
     Cpu cpu;
     Bus bus;
@@ -21,11 +23,11 @@ class Emulator {
     
     bool die = false;
 
-    
+    void emu_cycles(int cpu_cycles);
 
     public:
 
-    Emulator(): bus(cart, ram), cpu(bus, ram, &ticks), ui(&die) {}
+    Emulator(): bus(cart, ram), cpu(bus, ram, &ticks, [this](int x) {this->emu_cycles(x);}), ui(&die) {}
 
     void* cpu_run(void* p);
     bool emu_init(char* path);
