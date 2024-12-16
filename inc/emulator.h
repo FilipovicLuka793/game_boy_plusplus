@@ -10,28 +10,28 @@
 #include <type_traits>
 
 class Emulator {
-    private:
+private:
+  friend class Cpu;
 
-    friend class Cpu;
+  Cartridge cart;
+  Cpu cpu;
+  Bus bus;
+  Ram ram;
+  uint64_t ticks;
+  Ui ui;
 
-    Cartridge cart;
-    Cpu cpu;
-    Bus bus;
-    Ram ram;
-    uint64_t ticks;
-    Ui ui;
-    
-    bool die = false;
+  bool die = false;
 
-    void emu_cycles(int cpu_cycles);
+  void emu_cycles(int cpu_cycles);
 
-    public:
+public:
+  Emulator()
+      : bus(cart, ram),
+        cpu(bus, ram, &ticks, [this](int x) { this->emu_cycles(x); }),
+        ui(&die) {}
 
-    Emulator(): bus(cart, ram), cpu(bus, ram, &ticks, [this](int x) {this->emu_cycles(x);}), ui(&die) {}
-
-    void* cpu_run(void* p);
-    bool emu_init(char* path);
-
+  void *cpu_run(void *p);
+  bool emu_init(char *path);
 };
 
 #endif

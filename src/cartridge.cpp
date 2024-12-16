@@ -67,8 +67,7 @@ std::unordered_map<uint8_t, std::string> old_licensee_code_map = {
     {0x96, "Yonezawa/s'pal"},
     {0x97, "Kaneko"},
     {0x99, "Pack-In-Video"},
-    {0xA4, "Konami (Yu-Gi-Oh!)"}
-};
+    {0xA4, "Konami (Yu-Gi-Oh!)"}};
 
 std::unordered_map<uint8_t, std::string> cartridge_type_map = {
     {0x00, "ROM ONLY"},
@@ -94,8 +93,7 @@ std::unordered_map<uint8_t, std::string> cartridge_type_map = {
     {0x1D, "MBC5+RUMBLE+RAM"},
     {0x1E, "MBC5+RUMBLE+RAM+BATTERY"},
     {0x20, "MBC6"},
-    {0x22, "MBC7+SENSOR+RUMBLE+RAM+BATTERY"}
-};
+    {0x22, "MBC7+SENSOR+RUMBLE+RAM+BATTERY"}};
 
 std::unordered_map<uint8_t, std::string> rom_size_map = {
     {0x00, "32 KiB - 2 (no banking)"},
@@ -106,8 +104,7 @@ std::unordered_map<uint8_t, std::string> rom_size_map = {
     {0x05, "1 MiB - 64"},
     {0x06, "2 MiB - 128"},
     {0x07, "4 MiB - 256"},
-    {0x08, "8 MiB - 512"}
-};
+    {0x08, "8 MiB - 512"}};
 
 std::unordered_map<uint8_t, std::string> ram_size_map = {
     {0x00, "0 - No RAM"},
@@ -115,57 +112,58 @@ std::unordered_map<uint8_t, std::string> ram_size_map = {
     {0x02, "8 KiB - 1 bank"},
     {0x03, "32 Kib - 4 banks of 8KiB each"},
     {0x04, "128 Kib - 16 banks of 8KiB each"},
-    {0x05, "64 Kib - 8 banks of 8KiB each"}
-};
+    {0x05, "64 Kib - 8 banks of 8KiB each"}};
 
-bool Cartridge::load_cart(char* path){
-    //this->filename = path.substr(path.find_last_of("/"));
-    
-    FILE* fp = fopen(path, "r");
+bool Cartridge::load_cart(char *path) {
+  // this->filename = path.substr(path.find_last_of("/"));
 
-    if(!fp) {
-        printf("Failed to open on path: %s\n", path);
-        return false;
-    }
+  FILE *fp = fopen(path, "r");
 
-    printf("Opened: %s\n", this->filename.c_str());
+  if (!fp) {
+    printf("Failed to open on path: %s\n", path);
+    return false;
+  }
 
-    fseek(fp, 0, SEEK_END);
-    this->rom_size = ftell(fp);
-    rewind(fp);
+  printf("Opened: %s\n", this->filename.c_str());
 
-    this->rom_data = (uint8_t* )malloc(this->rom_size);
-    if(this->rom_data == nullptr){
-        printf("Failed to allocate memory to rom_data\n");
-        return false;
-    }
-    fread(this->rom_data, this->rom_size, 1, fp);
-    fclose(fp);
-    this->header = (rom_header*)(this->rom_data + 0x100);
+  fseek(fp, 0, SEEK_END);
+  this->rom_size = ftell(fp);
+  rewind(fp);
 
-    printf("Cartridge Loaded:\n");
-    printf("\t Title : %s\n", this->header->title);
-    printf("\t New licensee code : %2.2X - %s\n", this->header->old_licensee_code, old_licensee_code_map[this->header->old_licensee_code].c_str());
-    printf("\t Cartridge type : %2.2X - %s\n", this->header->catrige_type, cartridge_type_map[this->header->catrige_type].c_str());
-    printf("\t ROM size - ROM banks : %2.2X - %s\n", this->header->rom_size, rom_size_map[this->header->rom_size].c_str());
-    printf("\t RAM size : %2.2X - %s\n", this->header->ram_size, ram_size_map[this->header->ram_size].c_str());
-    printf("\t ROM version : %2.2X\n", this->header->maks_rom_version_number);
+  this->rom_data = (uint8_t *)malloc(this->rom_size);
+  if (this->rom_data == nullptr) {
+    printf("Failed to allocate memory to rom_data\n");
+    return false;
+  }
+  fread(this->rom_data, this->rom_size, 1, fp);
+  fclose(fp);
+  this->header = (rom_header *)(this->rom_data + 0x100);
 
+  printf("Cartridge Loaded:\n");
+  printf("\t Title : %s\n", this->header->title);
+  printf("\t New licensee code : %2.2X - %s\n", this->header->old_licensee_code,
+         old_licensee_code_map[this->header->old_licensee_code].c_str());
+  printf("\t Cartridge type : %2.2X - %s\n", this->header->catrige_type,
+         cartridge_type_map[this->header->catrige_type].c_str());
+  printf("\t ROM size - ROM banks : %2.2X - %s\n", this->header->rom_size,
+         rom_size_map[this->header->rom_size].c_str());
+  printf("\t RAM size : %2.2X - %s\n", this->header->ram_size,
+         ram_size_map[this->header->ram_size].c_str());
+  printf("\t ROM version : %2.2X\n", this->header->maks_rom_version_number);
 
-    int x = 0;
-    for(int i = 0x0134; i <= 0x014C; i++){
-        x = x - this->rom_data[i] - 1;
-    }
+  int x = 0;
+  for (int i = 0x0134; i <= 0x014C; i++) {
+    x = x - this->rom_data[i] - 1;
+  }
 
-    printf("\t Checksum : %2.2X (%s)\n", this->header->header_checksum, (x & 0xFF) ? "PASSED" : "FAILED");
-    return true;
+  printf("\t Checksum : %2.2X (%s)\n", this->header->header_checksum,
+         (x & 0xFF) ? "PASSED" : "FAILED");
+  return true;
 }
 
-uint8_t Cartridge::read_cart(uint16_t addr){
-    return this->rom_data[addr];
-}
+uint8_t Cartridge::read_cart(uint16_t addr) { return this->rom_data[addr]; }
 
-void Cartridge::write_cart(uint16_t addr, uint8_t val){
-    printf("Writing in ROM is not yet implemented\n");
-    exit(-8);
+void Cartridge::write_cart(uint16_t addr, uint8_t val) {
+  printf("Writing in ROM is not yet implemented\n");
+  exit(-8);
 }
