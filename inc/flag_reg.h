@@ -4,28 +4,25 @@
 #include <cstdint>
 class Flag_reg {
 
-    private:
+private:
+  bool z; // Zero flag
+  bool n; // Subtraction flag
+  bool h; // Half carry flag
+  bool c; // Carry flag
 
-    bool z; //Zero flag
-    bool n; //Subtraction flag
-    bool h; //Half carry flag
-    bool c; //Carry flag
+public:
+  uint8_t get_reg();
+  void set_reg(uint8_t val);
 
-    public:
+  void set_zero(bool z);
+  void set_subtraction(bool n);
+  void set_half_carry(bool h);
+  void set_carry(bool c);
 
-    uint8_t get_reg();
-    void set_reg(uint8_t val);
-
-    void set_zero(bool z);
-    void set_subtraction(bool n);
-    void set_half_carry(bool h);
-    void set_carry(bool c);
-
-    bool get_zero();
-    bool get_subtraction();
-    bool get_half_carry();
-    bool get_carry();
-
+  bool get_zero();
+  bool get_subtraction();
+  bool get_half_carry();
+  bool get_carry();
 };
 
 #endif

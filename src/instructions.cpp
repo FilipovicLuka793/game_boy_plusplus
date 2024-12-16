@@ -18,8 +18,8 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x76, {IT_HALT}},
     {0xCB, {IT_PREFIX, AT_D8}},
     {0x27, {IT_DAA}},
-    
-    //JP
+
+    // JP
     {0xC3, {IT_JP, AT_IMM16}},
     {0xC2, {IT_JP, AT_IMM16, RT_NONE, RT_NONE, CT_NZ}},
     {0xD2, {IT_JP, AT_IMM16, RT_NONE, RT_NONE, CT_NC}},
@@ -27,11 +27,11 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xD2, {IT_JP, AT_IMM16, RT_NONE, RT_NONE, CT_C}},
     {0xE9, {IT_JP, AT_R, RT_HL}},
 
-    //DI-EI
+    // DI-EI
     {0xF3, {IT_DI, AT_NO}},
     {0xFB, {IT_EI, AT_NO}},
-    
-    //AND
+
+    // AND
     {0xA0, {IT_AND, AT_R, RT_B}},
     {0xA1, {IT_AND, AT_R, RT_C}},
     {0xA2, {IT_AND, AT_R, RT_D}},
@@ -43,7 +43,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
 
     {0xE6, {IT_AND, AT_R_D8, RT_A}},
 
-    //XOR
+    // XOR
     {0xA8, {IT_XOR, AT_R, RT_B}},
     {0xA9, {IT_XOR, AT_R, RT_C}},
     {0xAA, {IT_XOR, AT_R, RT_D}},
@@ -55,7 +55,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
 
     {0xEE, {IT_XOR, AT_R_D8, RT_A}},
 
-    //OR
+    // OR
     {0xB0, {IT_OR, AT_R, RT_B}},
     {0xB1, {IT_OR, AT_R, RT_C}},
     {0xB2, {IT_OR, AT_R, RT_D}},
@@ -67,7 +67,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
 
     {0xF6, {IT_OR, AT_R_D8, RT_A}},
 
-    //CP
+    // CP
     {0xB8, {IT_CP, AT_R, RT_B}},
     {0xB9, {IT_CP, AT_R, RT_C}},
     {0xBA, {IT_CP, AT_R, RT_D}},
@@ -78,7 +78,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xBF, {IT_CP, AT_R, RT_A}},
     {0xFE, {IT_CP, AT_R_D8, RT_A}},
 
-    //LD
+    // LD
     {0x01, {IT_LD, AT_R_D16, RT_BC}},
     {0x11, {IT_LD, AT_R_D16, RT_DE}},
     {0x21, {IT_LD, AT_R_D16, RT_HL}},
@@ -170,12 +170,12 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xF9, {IT_LD, AT_R_R, RT_SP, RT_HL}},
     {0xF8, {IT_LD, AT_HL_SPR, RT_HL, RT_SP}},
     {0xF9, {IT_LD, AT_R_R, RT_SP, RT_HL}},
-    
-    //LDH
+
+    // LDH
     {0xE0, {IT_LDH, AT_A8_R, RT_NONE, RT_A}},
     {0xF0, {IT_LDH, AT_R_A8, RT_A}},
-    
-    //INC
+
+    // INC
     {0x04, {IT_INC, AT_R, RT_B}},
     {0x14, {IT_INC, AT_R, RT_D}},
     {0x24, {IT_INC, AT_R, RT_H}},
@@ -189,7 +189,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x33, {IT_INC, AT_R, RT_SP}},
     {0x34, {IT_INC, AT_MR, RT_HL}},
 
-    //DEC
+    // DEC
     {0x05, {IT_DEC, AT_R, RT_B}},
     {0x15, {IT_DEC, AT_R, RT_D}},
     {0x25, {IT_DEC, AT_R, RT_H}},
@@ -203,14 +203,14 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x3B, {IT_DEC, AT_R, RT_SP}},
     {0x35, {IT_DEC, AT_MR, RT_HL}},
 
-    //JR
+    // JR
     {0x20, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_NZ}},
     {0x30, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_NC}},
     {0x18, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_NONE}},
     {0x28, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_Z}},
     {0x38, {IT_JR, AT_D8, RT_NONE, RT_NONE, CT_C}},
 
-    //PUSH/POP
+    // PUSH/POP
     {0xC1, {IT_POP, AT_R, RT_BC}},
     {0xD1, {IT_POP, AT_R, RT_DE}},
     {0xE1, {IT_POP, AT_R, RT_HL}},
@@ -221,14 +221,14 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xE5, {IT_PUSH, AT_R, RT_HL}},
     {0xF5, {IT_PUSH, AT_R, RT_AF}},
 
-    //Calls
+    // Calls
     {0xCD, {IT_CALL, AT_IMM16}},
     {0xCC, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_Z}},
     {0xDC, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_C}},
     {0xC4, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_NZ}},
     {0xD4, {IT_CALL, AT_IMM16, RT_NONE, RT_NONE, CT_NC}},
 
-    //RET
+    // RET
     {0xC0, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_NZ}},
     {0xD0, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_NC}},
     {0xC8, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_Z}},
@@ -236,7 +236,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xC9, {IT_RET, AT_NO, RT_NONE, RT_NONE, CT_NONE}},
     {0xD9, {IT_RETI, AT_NO, RT_NONE, RT_NONE, CT_NONE}},
 
-    //RST
+    // RST
     {0xC7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x00}},
     {0xCF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x08}},
     {0xD7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x10}},
@@ -246,7 +246,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xF7, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x30}},
     {0xFF, {IT_RST, AT_NO, RT_NONE, RT_NONE, CT_NONE, 0x38}},
 
-    //ADD
+    // ADD
     {0x09, {IT_ADD, AT_R_R, RT_HL, RT_BC}},
     {0x19, {IT_ADD, AT_R_R, RT_HL, RT_DE}},
     {0x29, {IT_ADD, AT_R_R, RT_HL, RT_HL}},
@@ -261,10 +261,15 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0x86, {IT_ADD, AT_R_MR, RT_A, RT_HL}},
     {0x87, {IT_ADD, AT_R_R, RT_A, RT_A}},
 
-    {0xC6, {IT_ADD, AT_R_D8, RT_A,}},
+    {0xC6,
+     {
+         IT_ADD,
+         AT_R_D8,
+         RT_A,
+     }},
     {0xE8, {IT_ADD, AT_R_D8, RT_SP}},
 
-    //ADC
+    // ADC
     {0x88, {IT_ADC, AT_R_R, RT_A, RT_B}},
     {0x89, {IT_ADC, AT_R_R, RT_A, RT_C}},
     {0x8A, {IT_ADC, AT_R_R, RT_A, RT_D}},
@@ -276,7 +281,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
 
     {0xCE, {IT_ADC, AT_R_D8, RT_A}},
 
-    //SUB
+    // SUB
     {0x90, {IT_SUB, AT_R_R, RT_A, RT_B}},
     {0x91, {IT_SUB, AT_R_R, RT_A, RT_C}},
     {0x92, {IT_SUB, AT_R_R, RT_A, RT_D}},
@@ -288,7 +293,7 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
 
     {0xD6, {IT_SUB, AT_R_D8, RT_A}},
 
-    //SBC
+    // SBC
     {0x98, {IT_SBC, AT_R_R, RT_A, RT_B}},
     {0x99, {IT_SBC, AT_R_R, RT_A, RT_C}},
     {0x9A, {IT_SBC, AT_R_R, RT_A, RT_D}},
@@ -301,13 +306,13 @@ std::unordered_map<uint8_t, instruction> instruction_map = {
     {0xDE, {IT_SBC, AT_R_D8, RT_A}},
 };
 
-instruction* instruction_by_opcode(uint8_t opcode){
-    try{
-        return& instruction_map.at(opcode);
-    } catch (const std::out_of_range& e){
-        printf("Unknown instruction: %02X\n", opcode);
-        exit(-4);
-    }
+instruction *instruction_by_opcode(uint8_t opcode) {
+  try {
+    return &instruction_map.at(opcode);
+  } catch (const std::out_of_range &e) {
+    printf("Unknown instruction: %02X\n", opcode);
+    exit(-4);
+  }
 }
 
 std::unordered_map<instruction_type, std::string> ins_name_map = {
@@ -345,7 +350,7 @@ std::unordered_map<instruction_type, std::string> ins_name_map = {
     {IT_DI, "DI"},
     {IT_EI, "EI"},
     {IT_LDH, "LDH"},
-    //CB:
+    // CB:
     {IT_RLC, "RLC"},
     {IT_RRC, "RRC"},
     {IT_RL, "RL"},
@@ -356,63 +361,34 @@ std::unordered_map<instruction_type, std::string> ins_name_map = {
     {IT_SRL, "SRL"},
     {IT_BIT, "BIT"},
     {IT_RES, "RES"},
-    {IT_SET, "SET"}
-};
+    {IT_SET, "SET"}};
 
-std::string instruction_name(instruction_type it){
-    return ins_name_map.at(it);
+std::string instruction_name(instruction_type it) {
+  return ins_name_map.at(it);
 }
 
 std::unordered_map<register_type, std::string> reg_name_map = {
-    {RT_A, "A"},
-    {RT_F, "F"},
-    {RT_B, "B"},
-    {RT_C, "C"},
-    {RT_D, "D"},
-    {RT_E, "E"},
-    {RT_H, "H"},
-    {RT_L, "L"},
-    {RT_AF, "AF"},
-    {RT_BC, "BC"},
-    {RT_DE, "DE"},
-    {RT_HL, "HL"},
-    {RT_PC, "PC"},
-    {RT_SP, "SP"}
-};
+    {RT_A, "A"},   {RT_F, "F"},   {RT_B, "B"},   {RT_C, "C"},   {RT_D, "D"},
+    {RT_E, "E"},   {RT_H, "H"},   {RT_L, "L"},   {RT_AF, "AF"}, {RT_BC, "BC"},
+    {RT_DE, "DE"}, {RT_HL, "HL"}, {RT_PC, "PC"}, {RT_SP, "SP"}};
 
-std::string register_name(register_type rt){
-    try{
-        return reg_name_map.at(rt);
-    } catch (const std::out_of_range& e){
-        return "--";
-    }
+std::string register_name(register_type rt) {
+  try {
+    return reg_name_map.at(rt);
+  } catch (const std::out_of_range &e) {
+    return "--";
+  }
 }
 
 std::unordered_map<addres_type, std::string> addr_name_map = {
-    {AT_IMM16, "AT_IMM16"},
-    {AT_NO, "AT_NO"},
-    {AT_R, "AT_R"},
-    {AT_R_R, "AT_R_R"},
-    {AT_R_D16, "AT_R_D16"},
-    {AT_R_D8, "AT_R_D8"},
-    {AT_HLD_R, "AT_HLD_R"},
-    {AT_HLI_R, "AT_HLI_R"},
-    {AT_MR_R, "AT_MR_R"},
-    {AT_R_MR, "AT_R_MR"},
-    {AT_R_HLI, "AT_R_HLI"},
-    {AT_R_HLD, "AT_R_HLD"},
-    {AT_MR_D8, "AT_MR_D8"},
-    {AT_R_A16, "AT_R_A16"},
-    {AT_A16_R, "AT_A16_R"},
-    {AT_D16_R, "AT_D16_R"},
-    {AT_HL_SPR, "AT_HL_SPR"},
-    {AT_D8, "AT_D8"},
-    {AT_A8_R, "AT_A8_R"},
-    {AT_R_A8, "AT_R_A8"},
-    {AT_MR, "AT_MR"},
+    {AT_IMM16, "AT_IMM16"}, {AT_NO, "AT_NO"},         {AT_R, "AT_R"},
+    {AT_R_R, "AT_R_R"},     {AT_R_D16, "AT_R_D16"},   {AT_R_D8, "AT_R_D8"},
+    {AT_HLD_R, "AT_HLD_R"}, {AT_HLI_R, "AT_HLI_R"},   {AT_MR_R, "AT_MR_R"},
+    {AT_R_MR, "AT_R_MR"},   {AT_R_HLI, "AT_R_HLI"},   {AT_R_HLD, "AT_R_HLD"},
+    {AT_MR_D8, "AT_MR_D8"}, {AT_R_A16, "AT_R_A16"},   {AT_A16_R, "AT_A16_R"},
+    {AT_D16_R, "AT_D16_R"}, {AT_HL_SPR, "AT_HL_SPR"}, {AT_D8, "AT_D8"},
+    {AT_A8_R, "AT_A8_R"},   {AT_R_A8, "AT_R_A8"},     {AT_MR, "AT_MR"},
 
 };
 
-std::string addresing_name(addres_type at){
-    return addr_name_map.at(at);
-}
+std::string addresing_name(addres_type at) { return addr_name_map.at(at); }

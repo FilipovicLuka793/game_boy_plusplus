@@ -6,37 +6,33 @@
 #include <cstdint>
 #include <vector>
 class Bus {
-    private:
+private:
+  Cartridge &cart;
+  Ram &ram;
 
-    Cartridge& cart;
-    Ram& ram;
+  uint8_t ie_register;
 
-    uint8_t ie_register;
+  char serial_data[2];
 
-    char serial_data[2];
+  uint8_t int_flags;
 
-    uint8_t int_flags;
+  uint8_t io_read(uint16_t addr);
+  void io_write(uint16_t addr, uint8_t val);
 
-    uint8_t io_read(uint16_t addr);
-    void io_write(uint16_t addr, uint8_t val);
-    
+public:
+  Bus(Cartridge &cart, Ram &ram) : cart(cart), ram(ram) {}
 
-    public:
+  uint8_t bus_read(uint16_t addr);
+  void bus_write(uint16_t addr, uint8_t val);
 
-    Bus(Cartridge& cart, Ram& ram): cart(cart), ram(ram) {}
+  uint16_t bus_read16(uint16_t addr);
+  void bus_write16(uint16_t addr, uint16_t val);
 
-    uint8_t bus_read(uint16_t addr);
-    void bus_write(uint16_t addr, uint8_t val);
+  uint8_t get_ie_reg();
+  void set_ie_reg(uint8_t val);
 
-    uint16_t bus_read16(uint16_t addr);
-    void bus_write16(uint16_t addr, uint16_t val);
-
-    uint8_t get_ie_reg();
-    void set_ie_reg(uint8_t val);
-
-    uint8_t get_int_flags();
-    void set_int_flags(uint8_t val);
-
+  uint8_t get_int_flags();
+  void set_int_flags(uint8_t val);
 };
 
 #endif

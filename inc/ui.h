@@ -3,20 +3,17 @@
 
 class Ui {
 
-    private:
+private:
+  const int SCREEN_WIDTH = 1024;
+  const int SCREEN_HEIGHT = 768;
 
-    const int SCREEN_WIDTH = 1024;
-    const int SCREEN_HEIGHT = 768;
+  bool *die;
 
-    bool* die;
+public:
+  Ui(bool *die) : die(die) {}
 
-    public:
-
-    Ui(bool* die): die(die) {}
-
-    void ui_init();
-    void ui_handle_events();
-
+  void ui_init();
+  void ui_handle_events();
 };
 
 #endif
