@@ -50,9 +50,5 @@ bool Emulator::emu_init(char* path){
 }
 
 void Emulator::emu_cycles(int cpu_cycles){
-    int x = cpu_cycles * 4;
-    
-    for(int i = 0; i < x; i++){
-        ticks++;
-    }
+    ticks += cpu_cycles * 4;
 }
