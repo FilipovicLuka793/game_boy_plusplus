@@ -11,6 +11,7 @@ static void* cpu_run_wrapper(void* p) {
 }
 
 void* Emulator::cpu_run(void* p){
+    this->timer.timer_init();
     this->cpu.cpu_init();
     this->ticks = 0;
     
@@ -54,5 +55,6 @@ void Emulator::emu_cycles(int cpu_cycles){
     
     for(int i = 0; i < x; i++){
         ticks++;
+        timer.timer_tick();
     }
 }

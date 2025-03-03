@@ -9,6 +9,15 @@
 #include <functional>
 
 class Cpu {
+    public:
+    
+    typedef enum {
+        IT_VBLANK = 1,
+        IT_LCD_STAT = 2,
+        IT_TIMER = 4,
+        IT_SERIAL = 8,
+        IT_JOYPAD = 16
+    } interrupts_type;
     
     private:
 
@@ -99,22 +108,18 @@ class Cpu {
     void proc_ldh();
 
     //Interupts
-    typedef enum {
-        IT_VBLANK = 1,
-        IT_LCD_STAT = 2,
-        IT_TIMER = 4,
-        IT_SERIAL = 8,
-        IT_JOYPAD = 16
-    } interrupts_type;
 
     void int_handle(uint16_t addr);
     bool int_check(uint16_t addr, interrupts_type it);
+    
     void handle_interrupts();
 
     bool halted = false;
     uint64_t* ticks;
 
     public:
+
+    void request_interrupt(interrupts_type t);
 
     Cpu(Bus& bus, Ram& ram, uint64_t* ticks, std::function<void(int)> func): bus(bus), ram(ram), ticks(ticks), emu_cycles(func) {}
 

@@ -5,7 +5,16 @@
 
 void Cpu::cpu_init(){
     this->pc = 0x100;
-    this->a = 0x1;
+    this->sp = 0xFFFE;
+    this->a = 0x01;
+    this->f.set_reg(0xB0);
+    *((short *)&this->b) = 0x1300;
+    *((short *)&this->d) = 0xD800;
+    *((short *)&this->h) = 0x4D01;
+    bus.set_int_flags(0);
+    bus.set_ie_reg(0);
+    int_master_enable = false;
+    enabling_ime = false;
 }
 
 void Cpu::fetch_instruction(){
@@ -349,4 +358,8 @@ void Cpu::handle_interrupts(){
     else if (int_check(0x50, IT_TIMER)) {}
     else if (int_check(0x58, IT_SERIAL)) {}
     else if (int_check(0x60, IT_JOYPAD)) {}
+}
+
+void Cpu::request_interrupt(interrupts_type t) {
+    bus.set_int_flags(bus.get_int_flags() | t);
 }

@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include "../inc/timer.h"
 
 uint8_t Bus::io_read(uint16_t addr){
     if(addr == 0xFF01){
@@ -11,8 +12,7 @@ uint8_t Bus::io_read(uint16_t addr){
         return this->serial_data[1];
     }
     else if(addr >= 0xFF04 && addr <= 0xFF07){
-        //TODO
-        exit(-10);
+        return timer.timer_read(addr);
     }
     else if (addr == 0xFF0F) {
         return this->int_flags;
@@ -32,8 +32,8 @@ void Bus::io_write(uint16_t addr, uint8_t val){
         return;
     }
     else if (addr >= 0xFF04 && addr <= 0xFF07) {
-        //TODO
-        exit(-10);
+        timer.timer_write(addr, val);
+        return;
     }
     else if (addr == 0xFF0F) {
         this->int_flags = val;

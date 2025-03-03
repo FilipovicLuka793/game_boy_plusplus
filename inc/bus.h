@@ -5,11 +5,15 @@
 #include "ram.h"
 #include <cstdint>
 #include <vector>
+
+class Timer;
+
 class Bus {
     private:
 
     Cartridge& cart;
     Ram& ram;
+    Timer& timer;
 
     uint8_t ie_register;
 
@@ -23,7 +27,7 @@ class Bus {
 
     public:
 
-    Bus(Cartridge& cart, Ram& ram): cart(cart), ram(ram) {}
+    Bus(Cartridge& cart, Ram& ram, Timer& timer): cart(cart), ram(ram), timer(timer) {}
 
     uint8_t bus_read(uint16_t addr);
     void bus_write(uint16_t addr, uint8_t val);
